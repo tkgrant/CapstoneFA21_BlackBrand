@@ -658,7 +658,9 @@ ui <- navbarPage(
                                        "Data Source: Virginia Department of Education"
                                      )),
                                      
-                                   ))),
+                                  ))
+                            ),
+                            
                    
                    tabPanel(
                      "Bachelor's Degree",
@@ -784,11 +786,83 @@ ui <- navbarPage(
                    )
                    
                  )
-                 
-               )
-               
-             ))
-  ),
+
+                 #People and Values
+		 navbarMenu(title="People/Values",
+           	 tabPanel("Family Dynamics",
+                    fluidRow(
+                      p("", style = "padding-top:20px;"),
+                      column(
+                        4,
+                        h4(strong("Family Dynamics"))
+                      ),
+                      column(
+                        8,
+                        fluidPage(
+                          h1(strong("Family Dynamics"),align='center'),
+                          selectInput('select_family',
+                                      "Select Indicator:",
+                                      width="100%",
+                                      choices = c("Percent of Black Children under 18 in Female Head of Household")
+                          ),
+                          withSpinner(leafletOutput('family_maps'))
+                        )
+                      )
+                    ))),
+                 #Hampton Roads Overview & Demographics--------------------------------------------------
+#                  navbarMenu(title="People/Values",
+#                             tabPanel("Family Dynamics",
+#                                      fluidRow(
+#                                        p("", style = "padding-top:20px;"),
+#                                        column(4, 
+#                                               h4(strong("Family Dynamics")),
+#                                               p("", style = "padding-top:10px;"),
+#                                               p("We retrived several indicators using the 2019 5-year ACS estimates to examine the family dynamics of Black households in Hampton Roads. These characteristics
+#                                                are presented using interactive maps. Clicking on the tabs and selecting a variable populates the map. Hovering over the map displays the percentage of Black residents living
+#                                                 in a specific city/county with the selected characteristics. "),
+#                                               p("", style = "padding-top:20px;"),
+#                                               tags$ul(
+#                                                 tags$li(("The interactive map shows:")),
+#                                                 p("", style = "padding-top:20px;"),
+#                                                 withSpinner(textOutput("description_text")))
+#                                        ),
+#                                        column(8,
+#                                               fluidPage(
+#                                                 h1(strong("Family Dynamics"), align = "center"),
+#                                                 selectInput("select_wellbeing", "Select Indicator:", width = "100%", choices = c("Percent of Black Children under 18 in Female Head of Household", "Percent of Married Black Population 15 years and over", "Percent of Black Grandparents who are Guardians")),
+#                                                 withSpinner(leafletOutput("wellbeing_maps")),
+#                                                 p(tags$small("Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802")),
+                                                
+#                                               )
+#                                        )
+#                                      )),
+#                               tabPanel("Religion",
+#                                               fluidRow(
+#                                                 p("", style = "padding-top:20px;"),
+#                                                 column(4, 
+#                                                        h4(strong("Religion")),
+#                                                        p("", style = "padding-top:10px;"),
+#                                                        p("We retrived religious data using the 2010 10-year ARDA census estimates to examine the dominance of major religions in Hampton Roads. An estimate 
+#                                                          of religious adherents to each religious domain are presented using interactive maps. Clicking on the tabs and selecting a variable populates the 
+#                                                          map. Hovering over the map displays the percentage of adherents to the selected religion in a specific city/county. "),
+#                                                        p("", style = "padding-top:20px;"),
+#                                                        tags$ul(
+#                                                          tags$li(("The interactive map shows:")),
+#                                                          p("", style = "padding-top:20px;"),
+#                                                          withSpinner(textOutput("description_text")))
+#                                                 ),
+#                                                 column(8,
+#                                                        fluidPage(
+#                                                          h1(strong("Adherents to Religions"), align = "center"),
+#                                                          selectInput("select_wellbeing", "Select Religion:", width = "100%", choices = c("Percent of Black Children under 18 in Female Head of Household", "Percent of Married Black Population 15 years and over", "Percent of Black Grandparents who are Guardians")),
+#                                                          withSpinner(leafletOutput("wellbeing_maps")),
+#                                                          p(tags$small("Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802")),
+                                                         
+#                                                        )
+#                                                 )
+#                                               ))
+# 		 ),
+				  
   
   
   navbarMenu(
@@ -913,9 +987,7 @@ ui <- navbarPage(
                  ),
                  p(
                    "While for some counties there has been a decline in unemployment rates across the decade (2010-2019) for Black households, there still exists some significant disparity for most counties/cities. One such example is Williamsburg County that in 2010 had a similar unemployment rate for both Blacks and the region residents, 6.0% and 6.1%, respectively. But by 2019, that gap widen significantly by 4.6 percentage points (the Black unemployment rate was 10.4% and the total population 5.8%)"
-                 ),
-                 
-                 
+                 ),            
                ),
                column(
                  8,
@@ -1227,9 +1299,6 @@ ui <- navbarPage(
                           width = "100%",
                           choices = c(
                             "Percent of Black Households Receiving Foodstamps/SNAP Benefits",
-                            "Percent of Black Children under 18 in Female Head of Household",
-                            "Percent of Married Black Population 15 years and over",
-                            "Percent of Black Grandparents who are Guardians",
                             "Percent of Black County Migration",
                             "Percent of Black Population that uses car/truck/van to get to work",
                             "Percent of Black Population that uses public transportation to get to work",
@@ -1248,7 +1317,45 @@ ui <- navbarPage(
              ))
     
   ),
-  
+		       
+  #People and Values
+  navbarMenu(title = "People/Values",
+           tabPanel("Family Dynamics",
+                    fluidRow(
+                      p("", style = "padding-top:20px;"),
+                      column(4,
+                        h4(strong("Family Dynamics")),
+                        p(
+                          "We retrived several indicators using the 2019 5-year ACS estimates to examine the family dynamics of Black households in Hampton Roads. These characteristics
+                        are presented using interactive maps. Clicking on the tabs and selecting a variable populates the map. Hovering over the map displays the percentage of Black residents living
+                        in a specific city/county with the selected characteristics. "
+                        ),
+                        p("", style = "padding-top:20px;"),
+                        tags$ul(
+                          tags$li(("The interactive map shows:")),
+                          p("", style = "padding-top:20px;"),
+                          withSpinner(textOutput("description_famtext"))
+                        )
+                      ),
+                      column(8,
+                             fluidPage(
+                               h1(strong("Family Dynamics"), align = 'center'),
+                               selectInput(
+                                 'select_family',"Select Indicator:",width = "100%",
+                                 choices = c(
+                                   "Percent of Black Children under 18 in Female Head of Household",
+                                   "Percent of Married Black Population 15 years and over",
+                                   "Percent of Black Grandparents who are Guardians"
+                                 )
+                               ),
+                               withSpinner(leafletOutput('family_maps')),
+                               p(
+                                 tags$small(
+                                   "Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"
+                                 )
+                               )
+                             ))
+                    ))), 
   
   tabPanel("Future Steps",
            fluidRow(
