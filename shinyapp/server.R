@@ -4701,14 +4701,15 @@ server <- function(input, output, session) {
       )
   })
   
-  
-  # Household Wellbeing -----------------------------------------------------
-  var_well <- reactive({
-    input$select_wellbeing
+  # Family Dynamics ---------------------------------------------------------
+  var_fam <- reactive({
+    input$select_family
   })
   
-  output$wellbeing_maps <- renderLeaflet({
-    if (var_well() == "Percent of Black Children under 18 in Female Head of Household") {
+
+  output$family_maps <- renderLeaflet({
+    if(var_fam() == "Percent of Black Children under 18 in Female Head of Household") {
+
       fml <- read_rds("data/fml.rds")
       fml <- fml %>%
         na.omit(fml)
@@ -4749,166 +4750,125 @@ server <- function(input, output, session) {
         )
     }
     
-    else if (var_well() == "Percent of Black Households Receiving Foodstamps/SNAP Benefits") {
-      foodstmp <- read_rds("data/foodstmp.rds")
-      colnames(foodstmp)[4] <- "Percent"
-      foodpal <-
-        colorNumeric(
-          palette = "viridis",
-          domain = foodstmp$Percent,
-          reverse = TRUE
-        )
+
+    else if(var_fam() == "Percent of Black Grandparents who are Guardians"){
       
-      foodstmp_map <- foodstmp %>%
-        leaflet(options = leafletOptions(
-          minZoom = 5,
-          maxZoom = 15,
-          drag = FALSE
-        )) %>%
-        addProviderTiles("CartoDB.PositronNoLabels") %>%
-        addPolygons(
-          color = ~ foodpal(Percent),
-          weight = 0.5,
-          fillOpacity = 0.7,
-          smoothFactor = 0,
-          highlightOptions = highlightOptions(
-            bringToFront = TRUE,
-            opacity = 1.5,
-            weight = 3
-          ),
-          label = ~ paste0(NAME, " - ", variable, ": ", Percent, "%")
-        ) %>%
-        addLegend(
-          "topleft",
-          pal = foodpal,
-          values = ~ Percent,
-          title = "Food Stamps",
-          labFormat = labelFormat(suffix = "%"),
-          opacity = 1
-        )
-    }
-    
-    else if (var_well() == "Percent of Black County Migration") {
-      mobile <- read_rds("data/mobile.rds")
-      colnames(mobile)[4] <- "Percent"
-      colnames(mobile)[3] <- "Intra-County Migration"
-      mobpal <-
-        colorNumeric(
-          palette = "viridis",
-          domain = mobile$Percent,
-          reverse = TRUE
-        )
-      
-      mobile_map <- mobile %>%
-        leaflet(options = leafletOptions(
-          minZoom = 5,
-          maxZoom = 15,
-          drag = FALSE
-        )) %>%
-        addProviderTiles("CartoDB.PositronNoLabels") %>%
-        addPolygons(
-          color = ~ mobpal(Percent),
-          weight = 0.5,
-          fillOpacity = 0.7,
-          smoothFactor = 0,
-          highlightOptions = highlightOptions(
-            bringToFront = TRUE,
-            opacity = 1.5,
-            weight = 3
-          ),
-          label = ~ paste0(NAME, "", "Intra-County Migration: ", Percent, "%")
-        ) %>%
-        addLegend(
-          "topleft",
-          pal = mobpal,
-          values = ~ Percent,
-          title = "County Migration",
-          labFormat = labelFormat(suffix = "%"),
-          opacity = 1
-        )
-      
-    }
-    
-    else if (var_well() == "Percent of Black Grandparents who are Guardians") {
       grand <- read_rds("data/grand.rds")
       colnames(grand)[4] <- "Percent"
       colnames(grand)[3] <- "Grandparent Guardian"
-      grandpal <-
-        colorNumeric(
-          palette = "viridis",
-          domain = grand$Percent,
-          reverse = TRUE
-        )
+      grandpal <- colorNumeric(palette = "viridis", domain = grand$Percent, reverse = TRUE)
       
-      grand_map <- grand %>%
-        leaflet(options = leafletOptions(
-          minZoom = 5,
-          maxZoom = 15,
-          drag = FALSE
-        )) %>%
-        addProviderTiles("CartoDB.PositronNoLabels") %>%
-        addPolygons(
-          color = ~ grandpal(Percent),
-          weight = 0.5,
-          fillOpacity = 0.7,
-          smoothFactor = 0,
-          highlightOptions = highlightOptions(
-            bringToFront = TRUE,
-            opacity = 1.5,
-            weight = 3
-          ),
-          label = ~ paste0(NAME, " - ", "Grandparent Guardian: ", Percent, "%")
-        ) %>%
-        addLegend(
-          "topleft",
-          pal = grandpal,
-          values = ~ Percent,
-          title = "Grandparent Guardian",
-          labFormat = labelFormat(suffix = "%"),
-          opacity = 1
-        )
+      grand_map <- grand %>% 
+        leaflet(options = leafletOptions(minZoom = 5, maxZoom = 15, drag = FALSE)) %>% 
+        addProviderTiles("CartoDB.PositronNoLabels") %>% 
+        addPolygons(color = ~ grandpal(Percent), weight = 0.5, fillOpacity = 0.7, smoothFactor = 0,
+                    highlightOptions = highlightOptions(bringToFront = TRUE, opacity = 1.5, weight = 3),
+                    label = ~paste0(NAME, " - ", "Grandparent Guardian: ", Percent, "%")) %>% 
+        addLegend("topleft",
+                  pal = grandpal,
+                  values = ~ Percent,
+                  title = "Grandparent Guardian",
+                  labFormat = labelFormat(suffix = "%"),
+                  opacity = 1)
     }
     
-    else if (var_well() == "Percent of Married Black Population 15 years and over") {
+    else if(var_fam() == "Percent of Married Black Population 15 years and over"){
       married <- read_rds("data/married.rds")
       colnames(married)[4] <- "Percent"
-      marriedpal <-
-        colorNumeric(
-          palette = "viridis",
-          domain = married$Percent,
-          reverse = TRUE
-        )
+      marriedpal <- colorNumeric(palette = "viridis", domain = married$Percent, reverse = TRUE)
       
-      married_map <- married %>%
-        leaflet(options = leafletOptions(
-          minZoom = 5,
-          maxZoom = 15,
-          drag = FALSE
-        )) %>%
-        addProviderTiles("CartoDB.PositronNoLabels") %>%
-        addPolygons(
-          color = ~ marriedpal(Percent),
-          weight = 0.5,
-          fillOpacity = 0.7,
-          smoothFactor = 0,
-          highlightOptions = highlightOptions(
-            bringToFront = TRUE,
-            opacity = 1.5,
-            weight = 3
-          ),
-          label = ~ paste0(NAME, " - ", "Married: ", Percent, "%")
-        ) %>%
-        addLegend(
-          "topleft",
-          pal = marriedpal,
-          values = ~ Percent,
-          title = "Married",
-          labFormat = labelFormat(suffix = "%"),
-          opacity = 1
-        )
+      married_map <- married %>% 
+        leaflet(options = leafletOptions(minZoom = 5, maxZoom = 15, drag = FALSE)) %>% 
+        addProviderTiles("CartoDB.PositronNoLabels") %>% 
+        addPolygons(color = ~ marriedpal(Percent), weight = 0.5, fillOpacity = 0.7, smoothFactor = 0,
+                    highlightOptions = highlightOptions(bringToFront = TRUE, opacity = 1.5, weight = 3),
+                    label = ~paste0(NAME, " - ", "Married: ", Percent, "%")) %>% 
+        addLegend("topleft",
+                  pal = marriedpal,
+                  values = ~ Percent,
+                  title = "Married",
+                  labFormat = labelFormat(suffix = "%"),
+                  opacity = 1)
+    }
+  })
+  
+  var_famtext <- reactive({
+    input$select_family
+  })
+  
+  output$description_famtext <- renderText({
+    if(var_famtext() == "Percent of Black Children under 18 in Female Head of Household"){
+      "Percentage of Black Children under the age of 18 that live in a female-headed household. We included this indicator as research has shown that female-headed households have
+    a greater risk of poverty and are more likely to be food-insecure. In Hampton Roads, regardless of location, majority of Black households with children under 18 have a female as the head.  For 7 of the 11 areas, over 50% of Black households 
+    for which data is available, is led by a female. This may suggest some family instability for half of the black children in the Hampton Roads region."
     }
     
-    else if (var_well() == "Percent of Black Population that uses car/truck/van to get to work") {
+    else if(var_famtext() == "Percent of Black Grandparents who are Guardians"){
+      "Percent distribution of Black grandparents who live with grandchildren who are responsible for said grandchildren.
+    Grandparents becoming principal guardians for their grandchildren suggest economic distress for families, as such, we included this indicator in our analysis.
+    There are some differences in this distribution across the cities and counties in Hampton Roads.  For example, of those Black grandparents who live 
+    with their own grandchildren, 80% of them are responsible for their grandchildren in Franklin, whereas in Gloucester, the rate is a low 4.8%."   
+      
+    }
+    
+    else if(var_famtext() == "Percent of Married Black Population 15 years and over"){
+      "The percentage of the Black population 15 years and over who are married. The literature shows that married households tend to be less impoverished and are more 
+    economically stable and stable. Except for York, Gloucester, Chesapeake (about 50%), there is a low marriage rate among the Black population. Marriage rates range from as low as 
+    20% (Norfolk) to 51% (Chesapeake), with the average rate being around 35%. "
+      
+    }
+  })
+      
+  # Household Wellbeing -----------------------------------------------------
+  var_well <- reactive({
+    input$select_wellbeing
+  })
+  
+  output$wellbeing_maps <- renderLeaflet({
+    if(var_well() == "Percent of Black Households Receiving Foodstamps/SNAP Benefits"){
+      
+      foodstmp <- read_rds("data/foodstmp.rds")
+      colnames(foodstmp)[4] <- "Percent"
+      foodpal <- colorNumeric(palette = "viridis", domain = foodstmp$Percent, reverse = TRUE)
+      
+      foodstmp_map <- foodstmp %>% 
+        leaflet(options = leafletOptions(minZoom = 5, maxZoom = 15, drag = FALSE)) %>% 
+        addProviderTiles("CartoDB.PositronNoLabels") %>% 
+        addPolygons(color = ~ foodpal(Percent), weight = 0.5, fillOpacity = 0.7, smoothFactor = 0,
+                    highlightOptions = highlightOptions(bringToFront = TRUE, opacity = 1.5, weight = 3),
+                    label = ~paste0(NAME, " - ", variable, ": ", Percent, "%")) %>% 
+        addLegend("topleft",
+                  pal = foodpal,
+                  values = ~ Percent,
+                  title = "Food Stamps",
+                  labFormat = labelFormat(suffix = "%"),
+                  opacity = 1)
+    }
+    
+    else if(var_well() == "Percent of Black County Migration"){
+      
+      mobile <- read_rds("data/mobile.rds")
+      colnames(mobile)[4] <- "Percent"
+      colnames(mobile)[3] <- "Intra-County Migration"
+      mobpal <- colorNumeric(palette = "viridis", domain = mobile$Percent, reverse = TRUE)
+      
+      mobile_map <- mobile %>% 
+        leaflet(options = leafletOptions(minZoom = 5, maxZoom = 15, drag = FALSE)) %>% 
+        addProviderTiles("CartoDB.PositronNoLabels") %>% 
+        addPolygons(color = ~ mobpal(Percent), weight = 0.5, fillOpacity = 0.7, smoothFactor = 0,
+                    highlightOptions = highlightOptions(bringToFront = TRUE, opacity = 1.5, weight = 3),
+                    label = ~paste0(NAME, "", "Intra-County Migration: ", Percent, "%")) %>% 
+        addLegend("topleft",
+                  pal = mobpal,
+                  values = ~ Percent,
+                  title = "County Migration",
+                  labFormat = labelFormat(suffix = "%"),
+                  opacity = 1)
+      
+    }
+    
+    else if(var_well() == "Percent of Black Population that uses car/truck/van to get to work"){
+
       priv_trans <- read_rds("data/priv_trans.rds")
       priv_trans <- priv_trans %>%
         na.omit(priv_trans)
@@ -5079,13 +5039,8 @@ server <- function(input, output, session) {
   })
   
   output$description_text <- renderText({
-    if (var_welltext() == "Percent of Black Children under 18 in Female Head of Household") {
-      "Percentage of Black Children under the age of 18 that live in a female-headed household. We included this indicator as research has shown that female-headed households have
-    a greater risk of poverty and are more likely to be food-insecure. In Hampton Roads, regardless of location, majority of Black households with children under 18 have a female as the head.  For 7 of the 11 areas, over 50% of Black households
-    for which data is available, is led by a female. This may suggest some family instability for half of the black children in the Hampton Roads region."
-    }
-    
-    else if (var_welltext() == "Percent of Black Households Receiving Foodstamps/SNAP Benefits") {
+
+    if (var_welltext() == "Percent of Black Households Receiving Foodstamps/SNAP Benefits") {
       "The percentage of Black Households receiving Food stamps or SNAP Benefits across the localities of Hampton Roads.
      More than half (54.3%) of the total Black population in Hampton Roads receive one of these welfare programs. There are also considerable
     variabilities across localities - in Franklin, approximately 92% received food stamps/SNAP benefits, in contrast to 12% in Gloucester
@@ -5095,21 +5050,6 @@ server <- function(input, output, session) {
     else if (var_welltext() == "Percent of Black County Migration") {
       "Percent of Black population that moved within state but from a different county. There seems to be low mobility across counties and cities in the Hampton Roads region.
     Migration rates ranged from as low as 0.4% to a high of 14.7%. "
-    }
-    
-    else if (var_welltext() == "Percent of Black Grandparents who are Guardians") {
-      "Percent distribution of Black grandparents who live with grandchildren who are responsible for said grandchildren.
-    Grandparents becoming principal guardians for their grandchildren suggest economic distress for families, as such, we included this indicator in our analysis.
-    There are some differences in this distribution across the cities and counties in Hampton Roads.  For example, of those Black grandparents who live
-    with their own grandchildren, 80% of them are responsible for their grandchildren in Franklin, whereas in Gloucester, the rate is a low 4.8%."
-      
-    }
-    
-    else if (var_welltext() == "Percent of Married Black Population 15 years and over") {
-      "The percentage of the Black population 15 years and over who are married. The literature shows that married households tend to be less impoverished and are more
-    economically stable and stable. Except for York, Gloucester, Chesapeake (about 50%), there is a low marriage rate among the Black population. Marriage rates range from as low as
-    20% (Norfolk) to 51% (Chesapeake), with the average rate being around 35%. "
-      
     }
     
     else if (var_welltext() == "Percent of Black Population that uses car/truck/van to get to work") {
@@ -5142,7 +5082,6 @@ server <- function(input, output, session) {
    Franklin, respectively."
     }
   })
-  
   
   # Ranked Graphs -----------------------------------------------------------
   
