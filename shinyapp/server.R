@@ -4796,7 +4796,7 @@ server <- function(input, output, session) {
     input$select_family
   })
   
-  output$description_text <- renderText({
+  output$description_famtext <- renderText({
     if(var_famtext() == "Percent of Black Children under 18 in Female Head of Household"){
       "Percentage of Black Children under the age of 18 that live in a female-headed household. We included this indicator as research has shown that female-headed households have
     a greater risk of poverty and are more likely to be food-insecure. In Hampton Roads, regardless of location, majority of Black households with children under 18 have a female as the head.  For 7 of the 11 areas, over 50% of Black households 
