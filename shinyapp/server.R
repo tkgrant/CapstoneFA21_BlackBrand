@@ -161,7 +161,7 @@ server <- function(input, output, session) {
     hamp_data <-
       hamp_data %>% group_by(variable) %>% summarize(sum(estimate))
     #select the column and rows we want
-    hamp_races <- hamp_data[c(2:8),]
+    hamp_races <- hamp_data[c(2:8), ]
     #Now graphing with other = hawaiin/pi, america/alask naive. other
     hamp_races3 <- data.frame(t(hamp_data[c(2:8), 2]))
     hamp_races3 <- mutate(hamp_races3, X8 = X3 + X5 + X6)
@@ -472,8 +472,8 @@ server <- function(input, output, session) {
     age1 <- age1[, 2:6]
     va_total_pop <- age1[1, 4]
     #Adds the female and male data together to get the population for each age group
-    va_male_age <- age1[3:25,]
-    va_female_age <- age1[27:49,]
+    va_male_age <- age1[3:25, ]
+    va_female_age <- age1[27:49, ]
     va_male_age <- tibble::rowid_to_column(va_male_age, "ID")
     va_female_age <- tibble::rowid_to_column(va_female_age, "ID")
     #adding the male and female estimates to get the total
@@ -681,8 +681,21 @@ server <- function(input, output, session) {
       )
     lon <-
       c(
-        -76.297654,-76.940148,-76.390236,-76.523771,-76.248186,-76.357799,-76.380289,-76.626346,
-        -76.053855,-76.708205,-76.519133,-76.708161,-76.804677,-76.375820,-77.114512,-76.566393
+        -76.297654,
+        -76.940148,
+        -76.390236,
+        -76.523771,
+        -76.248186,
+        -76.357799,
+        -76.380289,
+        -76.626346,-76.053855,
+        -76.708205,
+        -76.519133,
+        -76.708161,
+        -76.804677,
+        -76.375820,
+        -77.114512,
+        -76.566393
       )
     #format
     general_county_alt <-
@@ -1945,7 +1958,7 @@ server <- function(input, output, session) {
       pct_white2 <- pct_white %>% filter(TimeFrame == year)
       pct_white2$Location[pct_white2$Location == "Williamsburg"] <-
         "Williamsburg-James City"
-      pct_white2 <- pct_white2[c(1:5, 7:16),]
+      pct_white2 <- pct_white2[c(1:5, 7:16), ]
       #putting NAs and Ss in a table
       pct_white2$Data[is.na(pct_white2$Data)] <- "NA"
       display_tbl_white <-
@@ -1971,7 +1984,7 @@ server <- function(input, output, session) {
         suspension_pct %>% filter(TimeFrame == year)
       suspension_pct2$Location[suspension_pct2$Location == "Williamsburg"] <-
         "Williamsburg-James City"
-      suspension_pct2 <- suspension_pct2[c(1:5, 7:16),]
+      suspension_pct2 <- suspension_pct2[c(1:5, 7:16), ]
       #make a table w/ NA a S
       suspension_pct2$Data[is.na(suspension_pct2$Data)] <- "NA"
       display_tbl_black <-
@@ -3860,7 +3873,7 @@ server <- function(input, output, session) {
       #plot
       counties_pov <- ggplotly(counties_pov)
     }
-     
+    
   })
   
   
