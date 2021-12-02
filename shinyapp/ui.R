@@ -695,53 +695,92 @@ ui <- navbarPage(title = "Hampton Roads",
                                    )
                             ))),
                  
-                 tabPanel("Hampton Team", value = "team",
-                          fluidRow(column(3),
-                                   column(6,
-                                          h4(strong("Virginia Tech Data Science for the Public Good") , align = "center"),
-                                          p("The", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'Data Science for the Public Good (DSPG) Young Scholars program', target = "_blank"), 
-                                            "is a summer immersive program held at the", a(href = 'https://aaec.vt.edu/s', 'Virginia Tech Department of Agricultural and Applied Economics.'), 
-                                            "In its second year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program highlights, how to apply, and our annual symposium, please visit", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'the official VT DSPG website.', target = "_blank")),
-                                          #p("", style = "padding-top:10px;")
-                                   )
-                                   
-                          ),
-                          fluidRow(
-                            column(2),
-                            column(2, align = "center",
-                                   h4(strong("Graduate Fellow")), tags$br(),
-                                   tags$br(), img(src = "fellow-seth.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width="45%", height="45%"),
-                                   tags$br(), p(a(href = 'https://www.linkedin.com/in/aviseth/', 'Avi Seth', target = '_blank'), "(Virginia Tech, Computer Science)")
+                 navbarMenu(title="Meet the Team",
+                            tabPanel("VT DSPG", value = "team",
+                                     fluidRow(column(3),
+                                              column(6,
+                                                     h4(strong("Virginia Tech Data Science for the Public Good") , align = "center"),
+                                                     p("The", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'Data Science for the Public Good (DSPG) Young Scholars program', target = "_blank"), 
+                                                       "is a summer immersive program held at the", a(href = 'https://aaec.vt.edu/s', 'Virginia Tech Department of Agricultural and Applied Economics.'), 
+                                                       "In its second year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program highlights, how to apply, and our annual symposium, please visit", a(href = 'https://aaec.vt.edu/academics/undergraduate/beyond-classroom/dspg.html', 'the official VT DSPG website.', target = "_blank")),
+                                                     #p("", style = "padding-top:10px;")
+                                              )
+                                              
+                                     ),
+                                     fluidRow(
+                                       column(2),
+                                       column(2, align = "center",
+                                              h4(strong("Graduate Fellow")), tags$br(),
+                                              tags$br(), img(src = "fellow-seth.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width="45%", height="45%"),
+                                              tags$br(), p(a(href = 'https://www.linkedin.com/in/aviseth/', 'Avi Seth', target = '_blank'), "(Virginia Tech, Computer Science)")
+                                       ),
+                                       column(2, align = "center",
+                                              h4(strong("Undergraduate Interns")), tags$br(),
+                                              img(src = "BurkholderHeadshot.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
+                                              p(a(href = 'https://www.linkedin.com/in/matthew-burkholder-297b9119a/', 'Matthew Burkholder', target = '_blank'), "(Virginia Tech, Philosophy, Politics, & Economics)"), tags$br(),
+                                              img(src = "Mukora.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"), tags$br(),
+                                              p(a(href = "https://www.linkedin.com/in/victormukora/", 'Victor Mukora', target = '_blank'), "(Virginia Tech, Computational Modeling and Data Analytics)"), tags$br(),
+                                              img(src = "Christina_Prisbe_Headshot.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"), tags$br(),
+                                              p(a(href = "https://www.linkedin.com/in/christina-prisbe-60966b218/?midToken=AQGZJw6kSGscnQ&midSig=0iRgRUj5PNWpQ1&trk=eml-email_m2m_invite_single_01-hero-4-prof%7Ecta&trkEmail=eml-email_m2m_invite_single_01-hero-4-prof%7Ecta-null-ec0b8k%7Ekrp4eqqv%7E3v-null-neptune%2Fprofile%7Evanity%2Eview", 'Christina Prisbe', target = '_blank'), "(Virginia Tech, Computational Modeling and Data Analytics)"), tags$br(),
+                                              img(src = "kwabe.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"), tags$br(),
+                                              p(a(href = "https://www.linkedin.com/in/kb1999/", 'Kwabe Boateng', target = '_blank'), "(Virginia State University, College of Engineering and Technology)"),
+                                              
+                                       ),
+                                       column(2, align = "center",
+                                              h4(strong("Faculty Advisors")), tags$br(),
+                                              img(src = "Dr_Holmes.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", height = "150px", width = "150px"),  tags$br(),
+                                              p(a(href = 'https://aaec.vt.edu/people/faculty/holmes-chanita.html', 'Dr. Chanita Holmes', target = '_blank'), "(Virginia Tech, Department of Agricultural and Applied Economics)"),  tags$br(),
+                                              img(src = "Dr_Bradburn.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", height = "150px", width = "150px"),  tags$br(),
+                                              p(a(href = 'https://liberalarts.vt.edu/departments-and-schools/department-of-human-development-and-family-science/faculty/isabel-bradburn.html', 'Dr. Isabel Bradburn', target = '_blank'), "(Virginia Tech, Department of Human Development and Family Science)"),  tags$br()
+                                       ),
+                                       
+                                       column(2, align = "center",
+                                              h4(strong("Stakeholders")), tags$br(),
+                                              img(src = "MalloryTuttle.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
+                                              p(a(href = 'https://www.linkedin.com/in/mallory-taylor-tuttle/', 'Mallory Tuttle', target = '_blank'), "(Associate Director Virginia Tech Hampton Roads Centers)"), tags$br()
+                                       )
+                                       
+                                     )
                             ),
-                            column(2, align = "center",
-                                   h4(strong("Undergraduate Interns")), tags$br(),
-                                   img(src = "BurkholderHeadshot.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/matthew-burkholder-297b9119a/', 'Matthew Burkholder', target = '_blank'), "(Virginia Tech, Philosophy, Politics, & Economics)"), tags$br(),
-                                   img(src = "Mukora.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"), tags$br(),
-                                   p(a(href = "https://www.linkedin.com/in/victormukora/", 'Victor Mukora', target = '_blank'), "(Virginia Tech, Computational Modeling and Data Analytics)"), tags$br(),
-                                   img(src = "Christina_Prisbe_Headshot.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"), tags$br(),
-                                   p(a(href = "https://www.linkedin.com/in/christina-prisbe-60966b218/?midToken=AQGZJw6kSGscnQ&midSig=0iRgRUj5PNWpQ1&trk=eml-email_m2m_invite_single_01-hero-4-prof%7Ecta&trkEmail=eml-email_m2m_invite_single_01-hero-4-prof%7Ecta-null-ec0b8k%7Ekrp4eqqv%7E3v-null-neptune%2Fprofile%7Evanity%2Eview", 'Christina Prisbe', target = '_blank'), "(Virginia Tech, Computational Modeling and Data Analytics)"), tags$br(),
-                                   img(src = "kwabe.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"), tags$br(),
-                                   p(a(href = "https://www.linkedin.com/in/kb1999/", 'Kwabe Boateng', target = '_blank'), "(Virginia State University, College of Engineering and Technology)"),
-                                   
-                            ),
-                            column(2, align = "center",
-                                   h4(strong("Faculty Advisors")), tags$br(),
-                                   img(src = "Dr_Holmes.png", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", height = "150px", width = "150px"),  tags$br(),
-                                   p(a(href = 'https://aaec.vt.edu/people/faculty/holmes-chanita.html', 'Dr. Chanita Holmes', target = '_blank'), "(Virginia Tech, Department of Agricultural and Applied Economics)"),  tags$br(),
-                                   img(src = "Dr_Bradburn.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", height = "150px", width = "150px"),  tags$br(),
-                                   p(a(href = 'https://liberalarts.vt.edu/departments-and-schools/department-of-human-development-and-family-science/faculty/isabel-bradburn.html', 'Dr. Isabel Bradburn', target = '_blank'), "(Virginia Tech, Department of Human Development and Family Science)"),  tags$br()
-                            ),
-                            
-                            column(2, align = "center",
-                                   h4(strong("Stakeholders")), tags$br(),
-                                   img(src = "MalloryTuttle.jpg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width = "150px"),
-                                   p(a(href = 'https://www.linkedin.com/in/mallory-taylor-tuttle/', 'Mallory Tuttle', target = '_blank'), "(Associate Director Virginia Tech Hampton Roads Centers)"), tags$br()
-                            )
-                            
-                          )
-                 ),
-                 inverse = T
-            )
+                            tabPanel("CMDA Capstone", value = "team",
+                                     fluidRow(column(3),
+                                              column(6,
+                                                     h4(strong("Computational Modeling & Data Analytics Capstone Team (Fall 2021)") , align = "center"),
+                                                     p("The", a(href = 'https://www.ais.science.vt.edu/academics/cmda.html', 'Computational Modeling and Data Analytics (CMDA) program', target = "_blank"), 
+                                                       "draws on expertise from three primary departments at Virginia Tech with strengths in quantitative science: ", a(href = 'https://math.vt.edu/', ' Mathematics'), 
+                                                       ', ',a(href = 'https://www.stat.vt.edu/', 'Statistics'), ', ', a(href = 'https://cs.vt.edu/', ' Computer Science'), '.', 
+                                                       "By combining elements of these disciplines in innovative, integrated courses that emphasize techniques at the forefront of applied computation, we teach a rich suite of quantitative skills for tackling today's massive data-based problems.")
+                                                     #p("", style = "padding-top:10px;")
+                                              )
+                                              
+                                     ),
+                                     fluidRow(
+                                       column(2),
+                                       column(2, align = "center",
+                                              h4(strong("")), tags$br(),
+                                              tags$br(), img(src = "sana.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width="85%", height="85%"),
+                                              tags$br(), p(a(href = 'https://www.linkedin.com/in/sana-abbas-963138187/', 'Sana Abbas', target = '_blank'), "(Virginia Tech, CMDA)")
+                                       ),
+                                       column(2, align = "center",
+                                              h4(strong("")), tags$br(),
+                                              tags$br(), img(src = "talib.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width="85%", height="85%"),
+                                              tags$br(), p(a(href = 'https://www.linkedin.com/in/talibgrant/', 'Talib Grant', target = '_blank'), "(Virginia Tech, CMDA)")
+                                       ),
+                                       column(2, align = "center",
+                                              h4(strong("")), tags$br(),
+                                              tags$br(), img(src = "caleb.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width="85%", height="85%"),
+                                              tags$br(), p(a(href = 'https://www.linkedin.com/in/caleb-slaughter-2b904a154/', 'Caleb Slaughter', target = '_blank'), "(Virginia Tech, CMDA)")
+                                       ),
+                                       
+                                       column(2, align = "center",
+                                              h4(strong("")), tags$br(),
+                                              tags$br(), img(src = "eva.jpeg", style = "display: inline; margin-right: 5px; border: 1px solid #C0C0C0;", width="85%", height="85%"),
+                                              tags$br(), p(a(href = 'https://www.linkedin.com/in/eva-whaley-2022/', 'Eva Whaley', target = '_blank'), "(Virginia Tech, CMDA)")
+                                       )
+                                       
+                                     )
+                            )),
+                 inverse = T)
+
 return(ui)
 
