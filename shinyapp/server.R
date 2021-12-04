@@ -4818,7 +4818,59 @@ server <- function(input, output, session) {
       
     }
   })
-      
+    
+  # Media and Entertainment graphs ------------------------------------------
+  # var_news <- reactive({
+  #   input$select_news
+  # })
+  
+  output$anch_plots <- renderPlot({
+    anch <- read.csv("../data/news_anchors.csv", stringsAsFactors = TRUE)
+    ethn <- table(anch$Ethnicity)
+    # if (var_news() == "Ethnicity"){}
+    #pie chart displaying the counts of Ethnicity breakdown
+    plt1 <- anch %>%
+      group_by(Ethnicity) %>%
+      summarise(count = n()) %>%
+      ggplot(aes(x = "", y = count, fill = Ethnicity)) +
+      geom_bar(stat = "identity", width = 1) +
+      coord_polar("y", start = 0) +
+      theme_void() +
+      geom_text(aes(
+        y = count,
+        label = paste(round(count / sum(count) * 100, 1), "%"),
+        x = 1.3
+      ), position = position_stack(vjust = 0.5))
+    
+    #bar chart of the gender and ethnicity distributions
+    plt2 <- anch %>%
+      group_by(Ethnicity, Gender) %>%
+      summarise(count = n()) %>%
+      ggplot(aes(Ethnicity, count, fill = Gender)) +
+      geom_bar(stat = "identity", position = "dodge") + theme_fivethirtyeight() +
+      theme(axis.title = element_text()) + ylab('Count') +
+      xlab('Ethnicity')
+    #bar chart of the Roles vs. Ethnicity
+    plt3 <- anch %>%
+      group_by(Ethnicity, Role) %>%
+      summarise(count = n()) %>%
+      ggplot(aes(Ethnicity, count, fill = Role)) +
+      geom_bar(stat = "identity", position = "dodge") + theme_fivethirtyeight() +
+      theme(axis.title = element_text()) + ylab('Count') +
+      xlab('Ethnicity')
+    
+    plt4 <- anch %>%
+      group_by(Ethnicity, Channel) %>%
+      summarise(count = n()) %>%
+      ggplot(aes(Ethnicity, count, fill = Channel)) +
+      geom_bar(stat = "identity", position = "dodge") + theme_fivethirtyeight() +
+      theme(axis.title = element_text()) + ylab('Count') +
+      xlab('Ethnicity')
+    anch_plots <- ggarrange(plt1, plt2, plt3, plt4, ncol = 1, nrow = 4)
+    # ggarrange(plt2, plt3, plt4,  common.legend = TRUE)
+    anch_plots
+  }, height=1000)
+    
   # Household Wellbeing -----------------------------------------------------
   var_well <- reactive({
     input$select_wellbeing
