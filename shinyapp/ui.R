@@ -1247,66 +1247,202 @@ ui <- navbarPage(
     
   ),
 	
-# Media and Entertainment
-  navbarMenu(title="Media/Entertainment",
-             tabPanel("News Anchors",
-                      fluidRow(
-                        p("", style = "padding-top:20px;"),
-                        column(4,
-                               h4(strong("News Anchors")),
-                               p("", style = "padding-top:10px;"),
-                               p("We retrived several indicators using the 2019 5-year ACS estimates to examine the family dynamics of Black households in Hampton Roads. These characteristics
-                                               are presented using interactive maps. Clicking on the tabs and selecting a variable populates the map. Hovering over the map displays the percentage of Black residents living
-                                                in a specific city/county with the selected characteristics. ")
-                        ),
-                        column(8,
-                               fluidPage(
-                                 h1(strong("News Anchors"), align = "center"),
-                                 # selectInput(
-                                 #   "select_news",
-                                 #   "Select:",
-                                 #   width = "100%",
-                                 #   choices = c(
-                                 #     "Ethnicity",
-                                 #     "Gender and Ethnicity",
-                                 #     "Roles and Ethnicity",
-                                 #     "Channels and Ethnicity"
-                                 #   )),
-                                 withSpinner(plotOutput("anch_plots")),
-                                 p(tags$small("Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"))
-
-                               )
+  # Policy and Justice
+  navbarMenu(
+    title = "Policy/Justice",
+    tabPanel("Traffic Stops",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("Traffic Stops")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "Throughout the Hampton Roads region, there are three major local news channels: WAVY, WTKR, and Channel 13 News. Here we are looking at the race of the news anchors by gender, role, and channel. From the three news channels, there are a total of 90 news anchors. By looking at the pie chart, we can see that the majority of the news anchors (70%) were White and a quarter of the anchors (24.4%) were Black. The other 5% were either of Latin or Asian descent."
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "By looking at the graphic that displays Gender vs. Ethnicity, we can see that there were more Black female anchors than Black male anchors. This opposes the pattern that is displayed by the White anchors. This could be due to more Black females being in that profession in the area."
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "By looking at the graphic displaying Ethnicity vs. Role, we can see that the two most concentrated positions are news anchors, reporters, and meteorologists. Black news anchors were not that many less than the White news anchors, however there seems to be around 3 times more White news reporters and meteorologists than Black news reporters and meteorologists. By looking at the greater race distribution of Hampton Roads, the roles at the news channels compared to race are not a good representation of the community."
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "The last graphic shows Ethnicity Distribution by News Channel. Again, the most hired anchors are White across all channels, however WTKR has the least amount of Black news anchors. Another thing to notice is that WTKR has no anchors from any specific race group besides White and Black. The most racially inclusive channel seems to be Channel 13 based on the data that was collected."
+                 )
+               ),
+               column(8,
+                      fluidPage(
+                        h1(strong("Traffic Stops"), align = "center")
+                        
+                      ))
+             )),
+    tabPanel("City Council Demographics",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("City Council Demographics")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "What is played on the radio and where radio stations are located are telling of the community and what motivates the community. However, it is important to take into consideration that just because certain genres are usually dominated by a specific group/race, that doesn’t mean that only that race listens to that type of music. Due to those reasons, we are focusing on where the radio stations are located. The cities/counties where the most radio stations are located usually indicates the most racially diverse neighborhoods."
+                 )
+               ),
+               column(8,
+                      fluidPage(h1(
+                        strong("City Council Demographics"), align = "center"
+                      )))
+             )),
+    tabPanel("Incarceration Rates",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("Incarceration Rates")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "What is played on the radio and where radio stations are located are telling of the community and what motivates the community. However, it is important to take into consideration that just because certain genres are usually dominated by a specific group/race, that doesn’t mean that only that race listens to that type of music. Due to those reasons, we are focusing on where the radio stations are located. The cities/counties where the most radio stations are located usually indicates the most racially diverse neighborhoods."
+                 )
+               ),
+               column(8,
+                      fluidPage(h1(
+                        strong("Incarceration Rates"), align = "center"
+                      )))
+             ))
+  ),
+    
+  # Media and Entertainment
+  navbarMenu(
+    title = "Media/Entertainment",
+    tabPanel("News Anchors",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("News Anchors")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "Throughout the Hampton Roads region, there are three major local news channels: WAVY, WTKR, and Channel 13 News. Here we are looking at the race of the news anchors by gender, role, and channel. From the three news channels, there are a total of 90 news anchors. By looking at the pie chart, we can see that the majority of the news anchors (70%) were White and a quarter of the anchors (24.4%) were Black. The other 5% were either of Latin or Asian descent."
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "By looking at the graphic that displays Gender vs. Ethnicity, we can see that there were more Black female anchors than Black male anchors. This opposes the pattern that is displayed by the White anchors. This could be due to more Black females being in that profession in the area."
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "By looking at the graphic displaying Ethnicity vs. Role, we can see that the two most concentrated positions are news anchors, reporters, and meteorologists. Black news anchors were not that many less than the White news anchors, however there seems to be around 3 times more White news reporters and meteorologists than Black news reporters and meteorologists. By looking at the greater race distribution of Hampton Roads, the roles at the news channels compared to race are not a good representation of the community."
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "The last graphic shows Ethnicity Distribution by News Channel. Again, the most hired anchors are White across all channels, however WTKR has the least amount of Black news anchors. Another thing to notice is that WTKR has no anchors from any specific race group besides White and Black. The most racially inclusive channel seems to be Channel 13 based on the data that was collected."
+                 )
+               ),
+               column(8,
+                      fluidPage(
+                        h1(strong("News Anchors"), align = "center"),
+                        # selectInput(
+                        #   "select_news",
+                        #   "Select:",
+                        #   width = "100%",
+                        #   choices = c(
+                        #     "Ethnicity",
+                        #     "Gender and Ethnicity",
+                        #     "Roles and Ethnicity",
+                        #     "Channels and Ethnicity"
+                        #   )),
+                        withSpinner(plotOutput("anch_plots")),
+                        p(
+                          tags$small(
+                            "Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"
+                          )
                         )
-                      ))),
-	
-  #People and Values
-                 #Hampton Roads Overview & Demographics--------------------------------------------------
-                 navbarMenu(title="People/Values",
-                            tabPanel("Family Dynamics",
-                                     fluidRow(
-                                       p("", style = "padding-top:20px;"),
-                                       column(4, 
-                                              h4(strong("Family Dynamics")),
-                                              p("", style = "padding-top:10px;"),
-                                              p("We retrived several indicators using the 2019 5-year ACS estimates to examine the family dynamics of Black households in Hampton Roads. These characteristics
+                        
+                      ))
+             )),
+    tabPanel("Radio Stations",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("Radio Stations")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "What is played on the radio and where radio stations are located are telling of the community and what motivates the community. However, it is important to take into consideration that just because certain genres are usually dominated by a specific group/race, that doesn’t mean that only that race listens to that type of music. Due to those reasons, we are focusing on where the radio stations are located. The cities/counties where the most radio stations are located usually indicates the most racially diverse neighborhoods."
+                 )
+               ),
+               column(8,
+                      fluidPage(h1(
+                        strong("Radio Stations"), align = "center"
+                      )))
+             ))
+  ),
+  
+  
+  #People and Values--------------------------------------------------
+  navbarMenu(
+    title = "People/Values",
+    tabPanel("Family Dynamics",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("Family Dynamics")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "We retrived several indicators using the 2019 5-year ACS estimates to examine the family dynamics of Black households in Hampton Roads. These characteristics
                                                are presented using interactive maps. Clicking on the tabs and selecting a variable populates the map. Hovering over the map displays the percentage of Black residents living
-                                                in a specific city/county with the selected characteristics. "),
-                                              p("", style = "padding-top:20px;"),
-                                              tags$ul(
-                                                tags$li(("The interactive map shows:")),
-                                                p("", style = "padding-top:20px;"),
-                                                withSpinner(textOutput("description_famtext")))
-                                       ),
-                                       column(8,
-                                              fluidPage(
-                                                h1(strong("Family Dynamics"), align = "center"),
-                                                selectInput("select_family", "Select Indicator:", width = "100%", choices = c("Percent of Black Children under 18 in Female Head of Household", "Percent of Married Black Population 15 years and over", "Percent of Black Grandparents who are Guardians")),
-                                                withSpinner(leafletOutput("family_maps")),
-                                                p(tags$small("Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802")),
-                                                
-                                              )
-                                       )
-                                     ))),
+                                                in a specific city/county with the selected characteristics. "
+                 ),
+                 p("", style = "padding-top:20px;"),
+                 tags$ul(
+                   tags$li(("The interactive map shows:")),
+                   p("", style = "padding-top:20px;"),
+                   withSpinner(textOutput("description_famtext"))
+                 )
+               ),
+               column(8,
+                      fluidPage(
+                        h1(strong("Family Dynamics"), align = "center"),
+                        selectInput(
+                          "select_family",
+                          "Select Indicator:",
+                          width = "100%",
+                          choices = c(
+                            "Percent of Black Children under 18 in Female Head of Household",
+                            "Percent of Married Black Population 15 years and over",
+                            "Percent of Black Grandparents who are Guardians"
+                          )
+                        ),
+                        withSpinner(leafletOutput("family_maps")),
+                        p(
+                          tags$small(
+                            "Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"
+                          )
+                        ),
+                        
+                      ))
+             )),
+    tabPanel("Religion",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("Religion")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "What is played on the radio and where radio stations are located are telling of the community and what motivates the community. However, it is important to take into consideration that just because certain genres are usually dominated by a specific group/race, that doesn’t mean that only that race listens to that type of music. Due to those reasons, we are focusing on where the radio stations are located. The cities/counties where the most radio stations are located usually indicates the most racially diverse neighborhoods."
+                 )
+               ),
+               column(8,
+                      fluidPage(h1(
+                        strong("Religion"), align = "center"
+                      )))
+             ))
+  ),
+  
+  
   
   
   tabPanel("Future Steps",
