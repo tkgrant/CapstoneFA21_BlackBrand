@@ -33,6 +33,7 @@ library(mapdata)
 library(plotrix)
 library(scatterpie)
 library(leafpop)
+library(ggpubr)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -1245,7 +1246,39 @@ ui <- navbarPage(
              ))
     
   ),
-		       
+	
+# Media and Entertainment
+  navbarMenu(title="Media/Entertainment",
+             tabPanel("News Anchors",
+                      fluidRow(
+                        p("", style = "padding-top:20px;"),
+                        column(4,
+                               h4(strong("News Anchors")),
+                               p("", style = "padding-top:10px;"),
+                               p("We retrived several indicators using the 2019 5-year ACS estimates to examine the family dynamics of Black households in Hampton Roads. These characteristics
+                                               are presented using interactive maps. Clicking on the tabs and selecting a variable populates the map. Hovering over the map displays the percentage of Black residents living
+                                                in a specific city/county with the selected characteristics. ")
+                        ),
+                        column(8,
+                               fluidPage(
+                                 h1(strong("News Anchors"), align = "center"),
+                                 # selectInput(
+                                 #   "select_news",
+                                 #   "Select:",
+                                 #   width = "100%",
+                                 #   choices = c(
+                                 #     "Ethnicity",
+                                 #     "Gender and Ethnicity",
+                                 #     "Roles and Ethnicity",
+                                 #     "Channels and Ethnicity"
+                                 #   )),
+                                 withSpinner(plotOutput("anch_plots")),
+                                 p(tags$small("Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"))
+
+                               )
+                        )
+                      ))),
+	
   #People and Values
                  #Hampton Roads Overview & Demographics--------------------------------------------------
                  navbarMenu(title="People/Values",
