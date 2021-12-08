@@ -1312,9 +1312,9 @@ ui <- navbarPage(
                               # ),
                               # showOutput("pie_plots1", "Highcharts"),
                               # showOutput("pie_plots2", "Highcharts"),
-                              column(width=8,
+                              column(width=6,
                                      withSpinner(highchartOutput("pie_plots1"))),
-                              column(width=8,
+                              column(width=6,
                                      withSpinner(highchartOutput("pie_plots2"))),
                               p(tags$small("Source: ACS 5 Year Estimate Table DP03"))
                             )
