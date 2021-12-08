@@ -4980,7 +4980,7 @@ server <- function(input, output, session) {
         #theme(legend.position = "none") +  
         xlim(1990, 2020) + ylim(0, 2000)   
     }
-    else {
+    else if (var_jailChoice() == "Hampton Roads") {
       va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
       jail <- va_hampton_roads_incarceration_trends %>%
         group_by(year) %>%
@@ -5016,47 +5016,154 @@ server <- function(input, output, session) {
     jail
   })
   
+  # Pie plots
+  output$pie_plots1 <- renderHighchart({
+    # va_incarceration_trends <- read.csv('./data/incarceration-trends/va_incarceration_trends.csv')
+    va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
+    # percentage of jail pop. and state pop.
+    col_plot <- va_hampton_roads_incarceration_trends %>%
+      # group_by(year) %>%
+      filter(year == 2015) %>% # filter by year here
+      select(year, black_jail_pop, black_pop_15to64, latinx_jail_pop, latinx_pop_15to64,
+             native_jail_pop, native_pop_15to64, white_jail_pop, white_pop_15to64,
+             aapi_jail_pop, aapi_pop_15to64, other_race_jail_pop, total_jail_pop, total_pop_15to64) %>%
+      summarise(black_jail = round(sum(black_jail_pop, na.rm = TRUE)/sum( total_jail_pop, na.rm =TRUE)*100,0),
+                black_pop = round(sum(black_pop_15to64, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0),
+                native_jail = round(sum(native_jail_pop, na.rm = TRUE)/sum( total_jail_pop, na.rm =TRUE)*100,0),
+                native_pop = round(sum(native_pop_15to64, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0),
+                aapi_jail = round(sum(aapi_jail_pop, na.rm = TRUE)/sum( total_jail_pop, na.rm =TRUE)*100,0),
+                aapi_pop = round(sum(aapi_pop_15to64, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0),
+                white_jail = round(sum(white_jail_pop, na.rm = TRUE)/sum( total_jail_pop, na.rm =TRUE)*100,0),
+                white_pop = round(sum(white_pop_15to64, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0),
+                latinx_jail = round(sum(latinx_jail_pop, na.rm = TRUE)/sum( total_jail_pop, na.rm =TRUE)*100,0),
+                latinx_pop = round(sum(latinx_pop_15to64, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0),
+                other_jail = round(sum(other_race_jail_pop, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0)) %>%
+      pivot_longer(cols = 1:10,values_to = 'prop', names_to = 'race.ethnicity') %>%
+      mutate(class = case_when(race.ethnicity == 'black_jail' | race.ethnicity == 'black_pop' ~ 'black',
+                               race.ethnicity == 'white_jail' | race.ethnicity == 'white_pop' ~ 'white',
+                               race.ethnicity == 'aapi_jail' | race.ethnicity == 'aapi_pop' ~ 'asian.pi',
+                               race.ethnicity == 'latinx_jail' | race.ethnicity == 'latinx_pop' ~ 'latinx',
+                               race.ethnicity == 'native_jail' | race.ethnicity == 'native_pop' ~ 'native',
+                               race.ethnicity == 'other_jail' ~ 'other'
+      )) %>%
+      mutate(type = case_when(str_sub(race.ethnicity,-4)== 'jail'~ 'Jail Population',
+                              str_sub(race.ethnicity,-3) == 'pop'~ 'Total Population' )) %>%
+      arrange(desc(type)) %>%
+      ungroup()%>%
+      group_by(race.ethnicity)%>%
+      mutate(label.pos = prop/2)
+    
+    pie_plots1 <- col_plot %>%
+      filter(type == 'Jail Population')%>%
+      hchart(
+        "pie", hcaes(x = race.ethnicity, y = prop),
+        name = "Percentage of Jail Population 2015"
+      )
+    
+    pie_plots1
+  })
+  
+  output$pie_plots2 <- renderHighchart({
+    # va_incarceration_trends <- read.csv('./data/incarceration-trends/va_incarceration_trends.csv')
+    va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
+    # percentage of jail pop. and state pop.
+    col_plot <- va_hampton_roads_incarceration_trends %>%
+      # group_by(year) %>%
+      filter(year == 2015) %>% # filter by year here
+      select(year, black_jail_pop, black_pop_15to64, latinx_jail_pop, latinx_pop_15to64,
+             native_jail_pop, native_pop_15to64, white_jail_pop, white_pop_15to64,
+             aapi_jail_pop, aapi_pop_15to64, other_race_jail_pop, total_jail_pop, total_pop_15to64) %>%
+      summarise(black_jail = round(sum(black_jail_pop, na.rm = TRUE)/sum( total_jail_pop, na.rm =TRUE)*100,0),
+                black_pop = round(sum(black_pop_15to64, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0),
+                native_jail = round(sum(native_jail_pop, na.rm = TRUE)/sum( total_jail_pop, na.rm =TRUE)*100,0),
+                native_pop = round(sum(native_pop_15to64, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0),
+                aapi_jail = round(sum(aapi_jail_pop, na.rm = TRUE)/sum( total_jail_pop, na.rm =TRUE)*100,0),
+                aapi_pop = round(sum(aapi_pop_15to64, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0),
+                white_jail = round(sum(white_jail_pop, na.rm = TRUE)/sum( total_jail_pop, na.rm =TRUE)*100,0),
+                white_pop = round(sum(white_pop_15to64, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0),
+                latinx_jail = round(sum(latinx_jail_pop, na.rm = TRUE)/sum( total_jail_pop, na.rm =TRUE)*100,0),
+                latinx_pop = round(sum(latinx_pop_15to64, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0),
+                other_jail = round(sum(other_race_jail_pop, na.rm =TRUE)/sum(total_pop_15to64, na.rm=TRUE)*100, 0)) %>%
+      pivot_longer(cols = 1:10,values_to = 'prop', names_to = 'race.ethnicity') %>%
+      mutate(class = case_when(race.ethnicity == 'black_jail' | race.ethnicity == 'black_pop' ~ 'black',
+                               race.ethnicity == 'white_jail' | race.ethnicity == 'white_pop' ~ 'white',
+                               race.ethnicity == 'aapi_jail' | race.ethnicity == 'aapi_pop' ~ 'asian.pi',
+                               race.ethnicity == 'latinx_jail' | race.ethnicity == 'latinx_pop' ~ 'latinx',
+                               race.ethnicity == 'native_jail' | race.ethnicity == 'native_pop' ~ 'native',
+                               race.ethnicity == 'other_jail' ~ 'other'
+      )) %>%
+      mutate(type = case_when(str_sub(race.ethnicity,-4)== 'jail'~ 'Jail Population',
+                              str_sub(race.ethnicity,-3) == 'pop'~ 'Total Population' )) %>%
+      arrange(desc(type)) %>%
+      ungroup()%>%
+      group_by(race.ethnicity)%>%
+      mutate(label.pos = prop/2)
+
+    pie_plots2 <- col_plot %>%
+      filter(type == 'Total Population')%>%
+      hchart(
+        "pie", hcaes(x = race.ethnicity, y = prop),
+        name = "Percentage of Total Population 2015"
+      )
+    pie_plots2
+  })
+  
   # Prison
-  output$prison <- renderPlot({
+  var_prisonYear <- reactive({
+    input$select_prisonYear
+  })
+  
+  output$prison <- renderLeaflet({
     # incarceration_trends <- read.csv('./data/incarceration-trends/incarceration_trends.csv')
     # incarceration_trends_jurisdicition <- read.csv('./data/incarceration-trends/incarceration_trends_jail_jurisdiction.csv')
-    va_incarceration_trends <- read.csv('/data/incarceration-trends/va_incarceration_trends.csv')
-    # va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
-    prison <- va_incarceration_trends %>%
-      group_by(year) %>%
-      select(black_jail_pop, black_pop_15to64, latinx_jail_pop, latinx_pop_15to64,
-             native_jail_pop, native_pop_15to64, white_jail_pop, white_pop_15to64,
-             aapi_jail_pop, aapi_pop_15to64) %>%
-      summarise(black =
-                  sum(black_jail_pop, na.rm = TRUE)/sum(black_pop_15to64, na.rm =TRUE)*100000,
-                white =
-                  sum(white_jail_pop, na.rm = TRUE)/sum(white_pop_15to64, na.rm =TRUE)*100000,
-                asian.pi =
-                  sum(aapi_jail_pop, na.rm = TRUE)/sum(aapi_pop_15to64, na.rm =TRUE)*100000,
-                latinx =
-                  sum(latinx_jail_pop, na.rm = TRUE)/sum(latinx_pop_15to64, na.rm =TRUE)*100000,
-                native.amer =
-                  sum(native_jail_pop, na.rm = TRUE)/sum(native_pop_15to64, na.rm =TRUE)*100000) %>%
-      pivot_longer(cols = 2:6, names_to = 'race.ethnicity', values_to = 'jail.rate.per.100k') %>%
-      ungroup()%>%
-      arrange(desc(year),desc(jail.rate.per.100k))%>%
-      mutate(label = ifelse(year==2018, race.ethnicity, ''))%>%
-      ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity)) + 
-      # geom_label_repel(aes(year, jail.rate.per.100k, label = label),
-      #               nudge_x = 1, nudge_y = 5,
-      #               na.rm = TRUE) +
-      theme_fivethirtyeight() + scale_colour_viridis_d() + 
-      ggtitle('Jail Rate per 100,000 ages 15-64 for VA state') +
-      scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
-      scale_y_continuous(breaks = scales::pretty_breaks(n = 3)) +
-      #theme(legend.position = "none") +  
-      xlim(1990, 2020) + ylim(0, 2000)  
+    # va_incarceration_trends <- read.csv('./data/incarceration-trends/va_incarceration_trends.csv')
+    va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
+    geo_data <- readRDS('./data/geo_data.rds')
+    geo_data <- st_transform(geo_data)
+    
+    geo_data$loc_name <- str_to_lower(geo_data$loc_name)
+    geo_data$loc_name <- word(geo_data$loc_name, 1) 
+    
+    
+    va_prison_plot_df <- va_hampton_roads_incarceration_trends %>%
+      filter(year == var_prisonYear()) %>%
+      select(city_name, total_prison_adm_rate) %>%
+      drop_na(total_prison_adm_rate) %>%
+      arrange(desc(total_prison_adm_rate)) %>%
+      mutate(loc_name = str_to_lower(city_name),
+             loc_name = word(loc_name, 1)
+      ) %>%
+      mutate(total_prison_adm_rate = ifelse(total_prison_adm_rate == 0, NA, total_prison_adm_rate))
+    
+    
+    merged_data2 <- merge(va_prison_plot_df, geo_data, by = 'loc_name')
+    # merged_data2$geometry <- st_transform(merged_data2$geometry)
+    
+    labs <- lapply(seq(nrow(merged_data2)), function(i) {
+      paste0( '<p>', merged_data2[i, "city_name"], '<p></p>', 'Prison Admission Rate Per 100k: ', 
+              merged_data2[i, "total_prison_adm_rate"], '</p>') 
+    })
+    
+    # pal2 <- colorNumeric(palette = "viridis", domain = 1:2, reverse = TRUE)
+    # show_col(viridis_pal()(11))
+    # pal2 <- viridis_pal()(11)
+    pal2 <- colorNumeric(viridis_pal()(10), merged_data2$total_prison_adm_rate)
+    
+    prison <- merged_data2 %>%
+      leaflet( options = leafletOptions(minZoom = 5, maxZoom = 15, drag = FALSE)) %>% 
+      addProviderTiles("CartoDB.PositronNoLabels") %>%
+      addPolygons(data = merged_data2$geometry, color= pal2(merged_data2$total_prison_adm_rate),
+                  weight = 0.5,
+                  fillOpacity = 0.7, smoothFactor = 0,
+                  highlightOptions = highlightOptions(bringToFront = TRUE, opacity = 1.5, weight = 3),
+                  label = lapply(labs, htmltools::HTML)) %>%
+      addLegend(pal = pal2, values = ~merged_data2$total_prison_adm_rate, title = 'Admission Rate Per 100k', opacity = .75)  
     prison
   })
   
   # Radio stations
-  output$radio <- renderPlot({
-    geo_data <- readRDS('./shinyapp/data/geo_data.rds')
+  output$radio <- renderLeaflet({
+    geo_data <- readRDS('./data/geo_data.rds')
     geo_data <- st_transform(geo_data)
     
     geo_data$loc_name <- str_to_lower(geo_data$loc_name)

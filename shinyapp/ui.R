@@ -35,6 +35,8 @@ library(scatterpie)
 library(leafpop)
 library(ggpubr)
 library(viridis)
+library(highcharter)
+library(rCharts)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -1291,7 +1293,7 @@ ui <- navbarPage(
                                   "Hampton Roads"
                                 )
                               ),
-                              withSpinner(plotlyOutput("jail")),
+                              withSpinner(plotOutput("jail")),
                               p(tags$small("Source: "))
                               
                             )
@@ -1302,13 +1304,18 @@ ui <- navbarPage(
                             h4(strong("Jail and Population Demographics"), align = "center"),
                             fluidRow(
                               p(""),
-                              selectInput(
-                                "select_year",
-                                "Select Year:",
-                                width = "100%",
-                                choices = c("2015")
-                              ),
-                              # withSpinner(plotlyOutput("sector_plot")),
+                              # selectInput(
+                              #   "select_year",
+                              #   "Select Year:",
+                              #   width = "100%",
+                              #   choices = c("2015")
+                              # ),
+                              # showOutput("pie_plots1", "Highcharts"),
+                              # showOutput("pie_plots2", "Highcharts"),
+                              column(width=8,
+                                     withSpinner(highchartOutput("pie_plots1"))),
+                              column(width=8,
+                                     withSpinner(highchartOutput("pie_plots2"))),
                               p(tags$small("Source: ACS 5 Year Estimate Table DP03"))
                             )
                           ),
@@ -1319,23 +1326,17 @@ ui <- navbarPage(
                             fluidRow(
                               p(""),
                               selectInput(
-                                "select_year",
+                                "select_prisonYear",
                                 "Select Year:",
                                 width = "100%",
-                                choices = c("2015")
+                                choices = c("2013", "2012","2011", "2010", "2009")
                               ),
-                              # withSpinner(plotlyOutput("prison")),
+                              withSpinner(leafletOutput("prison")),
                               p(tags$small("Source: ACS 5 Year Estimate Table DP03"))
                               
                             )
                           )
-                        ), 
-                        withSpinner(plotOutput("prison")),
-                        p(
-                          tags$small(
-                            "Data Source: incarceration trends"
-                          ))
-                        
+                        )
                         ))
              ))
   ),
@@ -1369,23 +1370,10 @@ ui <- navbarPage(
                column(8,
                       fluidPage(
                         h1(strong("News Anchors"), align = "center"),
-                        # selectInput(
-                        #   "select_news",
-                        #   "Select:",
-                        #   width = "100%",
-                        #   choices = c(
-                        #     "Ethnicity",
-                        #     "Gender and Ethnicity",
-                        #     "Roles and Ethnicity",
-                        #     "Channels and Ethnicity"
-                        #   )),
                         withSpinner(plotOutput("anch_plots")),
-                        p(
-                          tags$small(
+                        p(tags$small(
                             "Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"
-                          )
-                        )
-                        
+                          ))
                       ))
              )),
     tabPanel("Radio Stations",
@@ -1402,9 +1390,8 @@ ui <- navbarPage(
                column(8, # radio
                       fluidPage(
                         h1(strong("Radio Stations"), align = "center"),
-                        withSpinner(plotOutput("radio")),
-                        p(
-                          tags$small(
+                        withSpinner(leafletOutput("radio")),
+                        p(tags$small(
                             "Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"
                           )))
              ))
