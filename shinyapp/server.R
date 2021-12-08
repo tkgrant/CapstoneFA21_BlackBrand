@@ -4875,7 +4875,7 @@ server <- function(input, output, session) {
   # })
   
   output$anch_plots <- renderPlot({
-    anch <- read.csv("../data/news_anchors.csv", stringsAsFactors = TRUE)
+    anch <- read.csv("./data/news_anchors.csv", stringsAsFactors = TRUE)
     ethn <- table(anch$Ethnicity)
     # if (var_news() == "Ethnicity"){}
     #pie chart displaying the counts of Ethnicity breakdown
@@ -4949,7 +4949,7 @@ server <- function(input, output, session) {
   
   output$jail <- renderPlot({
     if (var_jailChoice()=="Virginia"){
-      va_incarceration_trends <- read.csv('./data/incarceration-trends/va_incarceration_trends.csv')
+      va_incarceration_trends <- read.csv('./data/va_incarceration_trends.csv')
       jail <- va_incarceration_trends %>%
         group_by(year) %>%
         select(black_jail_pop, black_pop_15to64, latinx_jail_pop, latinx_pop_15to64,
@@ -4981,7 +4981,7 @@ server <- function(input, output, session) {
         xlim(1990, 2020) + ylim(0, 2000)   
     }
     else if (var_jailChoice() == "Hampton Roads") {
-      va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
+      va_hampton_roads_incarceration_trends <- read.csv('./data/va_hampton_roads_incarceration_trends.csv')
       jail <- va_hampton_roads_incarceration_trends %>%
         group_by(year) %>%
         select(black_jail_pop, black_pop_15to64, latinx_jail_pop, latinx_pop_15to64,
@@ -5022,8 +5022,8 @@ server <- function(input, output, session) {
   )
   
   output$pie_plots1 <- renderHighchart({
-    # va_incarceration_trends <- read.csv('./data/incarceration-trends/va_incarceration_trends.csv')
-    va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
+    # va_incarceration_trends <- read.csv('./data/va_incarceration_trends.csv')
+    va_hampton_roads_incarceration_trends <- read.csv('./data/va_hampton_roads_incarceration_trends.csv')
     # percentage of jail pop. and state pop.
     col_plot <- va_hampton_roads_incarceration_trends %>%
       # group_by(year) %>%
@@ -5068,8 +5068,8 @@ server <- function(input, output, session) {
   })
   
   output$pie_plots2 <- renderHighchart({
-    # va_incarceration_trends <- read.csv('./data/incarceration-trends/va_incarceration_trends.csv')
-    va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
+    # va_incarceration_trends <- read.csv('./data/va_incarceration_trends.csv')
+    va_hampton_roads_incarceration_trends <- read.csv('./data/va_hampton_roads_incarceration_trends.csv')
     # percentage of jail pop. and state pop.
     col_plot <- va_hampton_roads_incarceration_trends %>%
       # group_by(year) %>%
@@ -5118,10 +5118,10 @@ server <- function(input, output, session) {
   })
   
   output$prison <- renderLeaflet({
-    # incarceration_trends <- read.csv('./data/incarceration-trends/incarceration_trends.csv')
-    # incarceration_trends_jurisdicition <- read.csv('./data/incarceration-trends/incarceration_trends_jail_jurisdiction.csv')
-    # va_incarceration_trends <- read.csv('./data/incarceration-trends/va_incarceration_trends.csv')
-    va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
+    # incarceration_trends <- read.csv('./data/incarceration_trends.csv')
+    # incarceration_trends_jurisdicition <- read.csv('./data/incarceration_trends_jail_jurisdiction.csv')
+    # va_incarceration_trends <- read.csv('./data/va_incarceration_trends.csv')
+    va_hampton_roads_incarceration_trends <- read.csv('./data/va_hampton_roads_incarceration_trends.csv')
     geo_data <- readRDS('./data/geo_data.rds')
     geo_data <- st_transform(geo_data)
     
