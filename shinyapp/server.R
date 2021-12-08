@@ -4849,11 +4849,12 @@ server <- function(input, output, session) {
     # Filter by a Religion
     plot_data <- merged_data2 %>%
       mutate(value = ifelse(value == 0, NA, value)) %>%
-      filter(religion == var_religion()) # change this line to filter by different religion
+      filter(religion == var_religion())%>%
+      mutate(value = round(value,0))
     
     labs <- lapply(seq(nrow(plot_data)), function(i) {
       paste0( '<p>', plot_data[i, "city_name"], '<p></p>', 'Religion: ', 
-              plot_data[i, "religion"], '</p>', 'Value: ', '</p>',
+              plot_data[i, "religion"], '</p>', 'Percent Adherence: ', '</p>',
               plot_data[i, "value"])
     })
     pal2 <- colorNumeric(viridis_pal()(11), plot_data$value)
@@ -4865,7 +4866,7 @@ server <- function(input, output, session) {
                   fillOpacity = 0.7, smoothFactor = 0,
                   highlightOptions = highlightOptions(bringToFront = TRUE, opacity = 1.5, weight = 3),
                   label = lapply(labs, htmltools::HTML)) %>%
-      addLegend(pal = pal2, values = ~plot_data$value, title = 'Value', opacity = .75)
+      addLegend(pal = pal2, values = ~plot_data$value, title = 'Percent Adherence', opacity = .75)
     religion
   })
     
@@ -4921,7 +4922,7 @@ server <- function(input, output, session) {
     anch_plots
   }, height=1000)
     
-  # City council demographics
+  # City council demographics Race
   output$cityd <- renderPlot({
     police_df <- read.csv('./data/hampton_roads_police_chief.csv')
     politicans_df <- read.csv('./data/hampton_roads_politicans.csv')
@@ -4941,6 +4942,26 @@ server <- function(input, output, session) {
       ggtitle('City Council Demographics by Race 2021') +ylab('count')
     cityd
   })
+  
+  # City council demographics Gender
+  output$cityd2 <- renderPlot({
+    police_df <- read.csv('./data/hampton_roads_police_chief.csv')
+    politicans_df <- read.csv('./data/hampton_roads_politicans.csv')
+    cityd2 <- politicans_df %>%
+      pivot_longer(4:7, names_to = 'demographic') %>%
+      mutate(demographic = str_sub(demographic,  14)) %>%
+      select(-c(Mayor, Vice.Mayor)) %>%
+      filter(demographic == 'Female' | demographic == 'Male') %>%
+      ggplot(aes(x=City, y = value, fill = demographic)) +
+      geom_bar(stat = 'identity', position = 'dodge') + 
+      theme_fivethirtyeight() +
+      theme(axis.title.y = element_text(),
+            axis.title = element_text(),
+            axis.text.x = element_text(angle = 90)) +
+      ggtitle('City Council Demographics by Gender 2021') +ylab('count')
+    cityd2
+  })
+  
   
   # Jail plots
   var_jailChoice <- reactive({
@@ -5059,9 +5080,10 @@ server <- function(input, output, session) {
     
     pie_plots1 <- col_plot %>%
       filter(type == 'Jail Population')%>%
+      mutate(race.ethnicity = str_sub(race.ethnicity, 1, -6)) %>%
       hchart(
         "pie", hcaes(x = race.ethnicity, y = prop),
-        name = "Percentage of Jail Population"
+        name = paste0("Percentage of Jail Population ", var_pieYear())
       )
     
     pie_plots1
@@ -5105,9 +5127,10 @@ server <- function(input, output, session) {
 
     pie_plots2 <- col_plot %>%
       filter(type == 'Total Population')%>%
+      mutate(race.ethnicity = str_sub(race.ethnicity, 1, -5)) %>%
       hchart(
         "pie", hcaes(x = race.ethnicity, y = prop),
-        name = "Percentage of Total Population"
+        name = paste0("Percentage of Total Population ", var_pieYear())
       )
     pie_plots2
   })
@@ -5144,7 +5167,7 @@ server <- function(input, output, session) {
     # merged_data2$geometry <- st_transform(merged_data2$geometry)
     
     labs <- lapply(seq(nrow(merged_data2)), function(i) {
-      paste0( '<p>', merged_data2[i, "city_name"], '<p></p>', 'Prison Admission Rate Per 100k: ', 
+      paste0( '<p>', merged_data2[i, "city_name"], '<p></p>', paste(var_prisonYear(), ' Prison Admission Rate Per 100k: '), 
               merged_data2[i, "total_prison_adm_rate"], '</p>') 
     })
     

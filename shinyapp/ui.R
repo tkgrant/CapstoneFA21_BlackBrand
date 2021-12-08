@@ -1260,7 +1260,8 @@ ui <- navbarPage(
                column(8,
                       fluidPage(
                       h1(strong("City Council Demographics"), align = "center"),
-                      withSpinner(plotOutput('cityd'))))
+                      withSpinner(plotOutput('cityd')), 
+                      withSpinner(plotOutput('cityd2'))))
              )),
     tabPanel("Incarceration Trends",
              fluidRow(
@@ -1301,20 +1302,20 @@ ui <- navbarPage(
                           tabPanel(
                             "Jail/Pop Demographics",
                             p("", style = "padding-top:10px;"),
-                            h4(strong("Jail and Population Demographics"), align = "center"),
+                            h4(strong("Jail and Total Population Hampton Roads Demographics"), align = "center"),
                             fluidRow(
                               p(""),
                               selectInput(
                                 "select_pieYear",
                                 "Select Year:",
                                 width = "100%",
-                                choices = c("2015")
+                                choices = c("2014", "2015", "2016", "2017", "2018")
                               ),
                               # showOutput("pie_plots1", "Highcharts"),
                               # showOutput("pie_plots2", "Highcharts"),
-                              column(width=6,
+                              column(width=6, h3('Jail Population'),
                                      withSpinner(highchartOutput("pie_plots1"))),
-                              column(width=6,
+                              column(width=6, h3('Total Population'),
                                      withSpinner(highchartOutput("pie_plots2"))),
                               p(tags$small("Source: ACS 5 Year Estimate Table DP03"))
                             )
