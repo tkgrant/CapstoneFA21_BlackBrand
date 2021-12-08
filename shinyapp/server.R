@@ -4818,6 +4818,56 @@ server <- function(input, output, session) {
       
     }
   })
+  
+  # Religion
+  var_religion <- reactive({
+    input$select_rel
+  })
+  
+  output$religion <- renderLeaflet({
+    geo_data <- readRDS('./data/geo_data.rds')
+    geo_data <- st_transform(geo_data)
+    
+    geo_data$loc_name <- str_to_lower(geo_data$loc_name)
+    geo_data$loc_name <- word(geo_data$loc_name, 1) 
+    
+    
+    religion_data <- read.csv('./data/capstone_religious_adh.csv') 
+    colnames(religion_data)[1] <- 'loc_name' 
+    
+    religion_data <- religion_data %>%
+      mutate(city_name = loc_name,
+             loc_name = str_to_lower(loc_name),
+             loc_name = word(loc_name, 1)
+      ) 
+    
+    merged_data2 <- merge(religion_data, geo_data, by = 'loc_name') %>%
+      pivot_longer(cols = 2:6, names_to = 'religion', values_to = 'value')
+    # merged_data2$geometry <- st_transform(merged_data2$geometry)
+    
+    
+    # Filter by a Religion
+    plot_data <- merged_data2 %>%
+      mutate(value = ifelse(value == 0, NA, value)) %>%
+      filter(religion == var_religion()) # change this line to filter by different religion
+    
+    labs <- lapply(seq(nrow(plot_data)), function(i) {
+      paste0( '<p>', plot_data[i, "city_name"], '<p></p>', 'Religion: ', 
+              plot_data[i, "religion"], '</p>', 'Value: ', '</p>',
+              plot_data[i, "value"])
+    })
+    pal2 <- colorNumeric(viridis_pal()(11), plot_data$value)
+    religion <- plot_data %>%
+      leaflet(options = leafletOptions(minZoom = 5, maxZoom = 15, drag = FALSE)) %>% 
+      addProviderTiles("CartoDB.PositronNoLabels") %>%
+      addPolygons(data = plot_data$geometry, color= pal2(plot_data$value),
+                  weight = 0.5,
+                  fillOpacity = 0.7, smoothFactor = 0,
+                  highlightOptions = highlightOptions(bringToFront = TRUE, opacity = 1.5, weight = 3),
+                  label = lapply(labs, htmltools::HTML)) %>%
+      addLegend(pal = pal2, values = ~plot_data$value, title = 'Value', opacity = .75)
+    religion
+  })
     
   # Media and Entertainment graphs ------------------------------------------
   # var_news <- reactive({
@@ -4871,6 +4921,194 @@ server <- function(input, output, session) {
     anch_plots
   }, height=1000)
     
+  # City council demographics
+  output$cityd <- renderPlot({
+    police_df <- read.csv('./data/hampton_roads_police_chief.csv')
+    politicans_df <- read.csv('./data/hampton_roads_politicans.csv')
+    police_sum <- data.frame('black' = sum(police_df$Black, na.rm = TRUE),
+                             'white' = sum(police_df$White, na.rm = TRUE))
+    cityd <- politicans_df %>%
+      pivot_longer(4:7, names_to = 'demographic') %>%
+      mutate(demographic = str_sub(demographic,  14)) %>%
+      select(-c(Mayor, Vice.Mayor)) %>%
+      filter(demographic == 'White' | demographic == 'Black') %>%
+      ggplot(aes(x=City, y = value, fill = demographic)) +
+      geom_bar(stat = 'identity', position = 'dodge') + 
+      theme_fivethirtyeight() +
+      theme(axis.title.y = element_text(),
+            axis.title = element_text(),
+            axis.text.x = element_text(angle = 90)) +
+      ggtitle('City Council Demographics by Race 2021') +ylab('count')
+    cityd
+  })
+  
+  # Jail plots
+  var_jailChoice <- reactive({
+    input$select_jailChoice
+  })
+  
+  output$jail <- renderPlot({
+    if (var_jailChoice()=="Virginia"){
+      va_incarceration_trends <- read.csv('./data/incarceration-trends/va_incarceration_trends.csv')
+      jail <- va_incarceration_trends %>%
+        group_by(year) %>%
+        select(black_jail_pop, black_pop_15to64, latinx_jail_pop, latinx_pop_15to64,
+               native_jail_pop, native_pop_15to64, white_jail_pop, white_pop_15to64,
+               aapi_jail_pop, aapi_pop_15to64) %>%
+        summarise(black =
+                    sum(black_jail_pop, na.rm = TRUE)/sum(black_pop_15to64, na.rm =TRUE)*100000,
+                  white =
+                    sum(white_jail_pop, na.rm = TRUE)/sum(white_pop_15to64, na.rm =TRUE)*100000,
+                  asian.pi =
+                    sum(aapi_jail_pop, na.rm = TRUE)/sum(aapi_pop_15to64, na.rm =TRUE)*100000,
+                  latinx =
+                    sum(latinx_jail_pop, na.rm = TRUE)/sum(latinx_pop_15to64, na.rm =TRUE)*100000,
+                  native.amer =
+                    sum(native_jail_pop, na.rm = TRUE)/sum(native_pop_15to64, na.rm =TRUE)*100000) %>%
+        pivot_longer(cols = 2:6, names_to = 'race.ethnicity', values_to = 'jail.rate.per.100k') %>%
+        ungroup()%>%
+        arrange(desc(year),desc(jail.rate.per.100k))%>%
+        mutate(label = ifelse(year==2018, race.ethnicity, ''))%>%
+        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity)) + 
+        # geom_label_repel(aes(year, jail.rate.per.100k, label = label),
+        #               nudge_x = 1, nudge_y = 5,
+        #               na.rm = TRUE) +
+        theme_fivethirtyeight() + scale_colour_viridis_d() + 
+        ggtitle('Jail Rate per 100,000 ages 15-64 for VA state') +
+        scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+        scale_y_continuous(breaks = scales::pretty_breaks(n = 3)) +
+        #theme(legend.position = "none") +  
+        xlim(1990, 2020) + ylim(0, 2000)   
+    }
+    else {
+      va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
+      jail <- va_hampton_roads_incarceration_trends %>%
+        group_by(year) %>%
+        select(black_jail_pop, black_pop_15to64, latinx_jail_pop, latinx_pop_15to64,
+               native_jail_pop, native_pop_15to64, white_jail_pop, white_pop_15to64,
+               aapi_jail_pop, aapi_pop_15to64) %>%
+        summarise(black = 
+                    sum(black_jail_pop, na.rm = TRUE)/sum(black_pop_15to64, na.rm =TRUE)*100000,
+                  white = 
+                    sum(white_jail_pop, na.rm = TRUE)/sum(white_pop_15to64, na.rm =TRUE)*100000,
+                  asian.pi = 
+                    sum(aapi_jail_pop, na.rm = TRUE)/sum(aapi_pop_15to64, na.rm =TRUE)*100000,
+                  latinx = 
+                    sum(latinx_jail_pop, na.rm = TRUE)/sum(latinx_pop_15to64, na.rm =TRUE)*100000,
+                  native.amer = 
+                    sum(native_jail_pop, na.rm = TRUE)/sum(native_pop_15to64, na.rm =TRUE)*100000) %>%
+        pivot_longer(cols = 2:6, names_to = 'race.ethnicity', values_to = 'jail.rate.per.100k') %>%
+        ungroup()%>%
+        arrange(desc(year),desc(jail.rate.per.100k))%>%
+        mutate(label = ifelse(year==2018, race.ethnicity, ''))%>%
+        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity)) + 
+        # geom_label_repel(aes(year, jail.rate.per.100k, label = label),
+        #               nudge_x = 1, nudge_y = 5,
+        #               na.rm = TRUE) +
+        theme_fivethirtyeight() + scale_colour_viridis_d() + 
+        ggtitle('Jail Rate per 100,000 ages 15-64 in Hampton Roads') +
+        scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+        scale_y_continuous(breaks = scales::pretty_breaks(n = 3)) +
+        #theme(legend.position = "none") +  
+        xlim(1990, 2020) + ylim(0, 2000)   
+      
+    }
+    jail
+  })
+  
+  # Prison
+  output$prison <- renderPlot({
+    # incarceration_trends <- read.csv('./data/incarceration-trends/incarceration_trends.csv')
+    # incarceration_trends_jurisdicition <- read.csv('./data/incarceration-trends/incarceration_trends_jail_jurisdiction.csv')
+    va_incarceration_trends <- read.csv('/data/incarceration-trends/va_incarceration_trends.csv')
+    # va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
+    prison <- va_incarceration_trends %>%
+      group_by(year) %>%
+      select(black_jail_pop, black_pop_15to64, latinx_jail_pop, latinx_pop_15to64,
+             native_jail_pop, native_pop_15to64, white_jail_pop, white_pop_15to64,
+             aapi_jail_pop, aapi_pop_15to64) %>%
+      summarise(black =
+                  sum(black_jail_pop, na.rm = TRUE)/sum(black_pop_15to64, na.rm =TRUE)*100000,
+                white =
+                  sum(white_jail_pop, na.rm = TRUE)/sum(white_pop_15to64, na.rm =TRUE)*100000,
+                asian.pi =
+                  sum(aapi_jail_pop, na.rm = TRUE)/sum(aapi_pop_15to64, na.rm =TRUE)*100000,
+                latinx =
+                  sum(latinx_jail_pop, na.rm = TRUE)/sum(latinx_pop_15to64, na.rm =TRUE)*100000,
+                native.amer =
+                  sum(native_jail_pop, na.rm = TRUE)/sum(native_pop_15to64, na.rm =TRUE)*100000) %>%
+      pivot_longer(cols = 2:6, names_to = 'race.ethnicity', values_to = 'jail.rate.per.100k') %>%
+      ungroup()%>%
+      arrange(desc(year),desc(jail.rate.per.100k))%>%
+      mutate(label = ifelse(year==2018, race.ethnicity, ''))%>%
+      ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity)) + 
+      # geom_label_repel(aes(year, jail.rate.per.100k, label = label),
+      #               nudge_x = 1, nudge_y = 5,
+      #               na.rm = TRUE) +
+      theme_fivethirtyeight() + scale_colour_viridis_d() + 
+      ggtitle('Jail Rate per 100,000 ages 15-64 for VA state') +
+      scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
+      scale_y_continuous(breaks = scales::pretty_breaks(n = 3)) +
+      #theme(legend.position = "none") +  
+      xlim(1990, 2020) + ylim(0, 2000)  
+    prison
+  })
+  
+  # Radio stations
+  output$radio <- renderPlot({
+    geo_data <- readRDS('./shinyapp/data/geo_data.rds')
+    geo_data <- st_transform(geo_data)
+    
+    geo_data$loc_name <- str_to_lower(geo_data$loc_name)
+    geo_data$loc_name <- word(geo_data$loc_name, 1) 
+    
+    
+    radio_df <- read.csv('./data/radio_stations.csv')  %>%
+      filter(State == 'VA') %>%
+      mutate(loc_name = str_to_lower(Community.of.License),
+             loc_name = word(loc_name, 1),
+             city_name = Community.of.License)%>%
+      group_by(loc_name) %>%
+      summarise(formats = paste0(Format, collapse = ', '), count = n(),
+                city_name = city_name) %>%
+      distinct(loc_name, .keep_all = TRUE) %>%
+      mutate(formats1 = ifelse(loc_name == 'norfolk', 
+                               'religious, urban/variety contemporary, Rhythmic/urban Adult Contemporary' , formats))%>%
+      mutate(formats2 =ifelse(loc_name == 'norfolk', 
+                              'new/public affairs/npr, classical, country, active rock, christian chr', '')) %>%
+      mutate(formats1 = ifelse(loc_name == 'virginia', 
+                               'modern adult contemporary, big band/ nostalgia/old time radio,' , formats1))%>%
+      mutate(formats2 =ifelse(loc_name == 'virginia', 
+                              'christian contemporaty/preaching, album adult alternative, Christian contemporary hit radio', ''))
+    
+    
+    merged_data2 <- merge(radio_df, geo_data, by = 'loc_name')
+    # merged_data2$geometry <- st_transform(merged_data2$geometry)
+    
+    labs <- lapply(seq(nrow(merged_data2)), function(i) {
+      paste0( '<p>', merged_data2[i, "city_name"], '<p></p>', 'Count of Stations: ', 
+              merged_data2[i, "count"], '</p>', 'Type/Formats: ', '</p>',
+              merged_data2[i, "formats1"],'</p>', 
+              merged_data2[i, "formats2"], '</p>' ) 
+    })
+    
+    # pal2 <- colorNumeric(palette = "viridis", domain = 1:2, reverse = TRUE)
+    # show_col(viridis_pal()(11))
+    pal2 <- viridis_pal()(11)
+    pal2 <- colorNumeric(viridis_pal()(11), merged_data2$count)
+    
+    radio <- merged_data2 %>%
+      leaflet( options = leafletOptions(minZoom = 5, maxZoom = 15, drag = FALSE)) %>% 
+      addProviderTiles("CartoDB.PositronNoLabels") %>%
+      addPolygons(data = merged_data2$geometry, color= viridis_pal()(11)[merged_data2$count],
+                  weight = 0.5,
+                  fillOpacity = 0.7, smoothFactor = 0,
+                  highlightOptions = highlightOptions(bringToFront = TRUE, opacity = 1.5, weight = 3),
+                  label = lapply(labs, htmltools::HTML)) %>%
+      addLegend(pal = pal2, values = ~merged_data2$count, title = 'Number of Stations', opacity = .75)
+    radio
+  })
+  
   # Household Wellbeing -----------------------------------------------------
   var_well <- reactive({
     input$select_wellbeing
