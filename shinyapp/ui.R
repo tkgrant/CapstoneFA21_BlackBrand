@@ -1304,12 +1304,12 @@ ui <- navbarPage(
                             h4(strong("Jail and Population Demographics"), align = "center"),
                             fluidRow(
                               p(""),
-                              # selectInput(
-                              #   "select_year",
-                              #   "Select Year:",
-                              #   width = "100%",
-                              #   choices = c("2015")
-                              # ),
+                              selectInput(
+                                "select_pieYear",
+                                "Select Year:",
+                                width = "100%",
+                                choices = c("2015")
+                              ),
                               # showOutput("pie_plots1", "Highcharts"),
                               # showOutput("pie_plots2", "Highcharts"),
                               column(width=6,

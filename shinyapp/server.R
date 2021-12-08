@@ -5017,13 +5017,17 @@ server <- function(input, output, session) {
   })
   
   # Pie plots
+  var_pieYear <- reactive(
+    input$select_pieYear
+  )
+  
   output$pie_plots1 <- renderHighchart({
     # va_incarceration_trends <- read.csv('./data/incarceration-trends/va_incarceration_trends.csv')
     va_hampton_roads_incarceration_trends <- read.csv('./data/incarceration-trends/va_hampton_roads_incarceration_trends.csv')
     # percentage of jail pop. and state pop.
     col_plot <- va_hampton_roads_incarceration_trends %>%
       # group_by(year) %>%
-      filter(year == 2015) %>% # filter by year here
+      filter(year == var_pieYear()) %>% # filter by year here
       select(year, black_jail_pop, black_pop_15to64, latinx_jail_pop, latinx_pop_15to64,
              native_jail_pop, native_pop_15to64, white_jail_pop, white_pop_15to64,
              aapi_jail_pop, aapi_pop_15to64, other_race_jail_pop, total_jail_pop, total_pop_15to64) %>%
@@ -5057,7 +5061,7 @@ server <- function(input, output, session) {
       filter(type == 'Jail Population')%>%
       hchart(
         "pie", hcaes(x = race.ethnicity, y = prop),
-        name = "Percentage of Jail Population 2015"
+        name = "Percentage of Jail Population"
       )
     
     pie_plots1
@@ -5069,7 +5073,7 @@ server <- function(input, output, session) {
     # percentage of jail pop. and state pop.
     col_plot <- va_hampton_roads_incarceration_trends %>%
       # group_by(year) %>%
-      filter(year == 2015) %>% # filter by year here
+      filter(year == var_pieYear()) %>% # filter by year here
       select(year, black_jail_pop, black_pop_15to64, latinx_jail_pop, latinx_pop_15to64,
              native_jail_pop, native_pop_15to64, white_jail_pop, white_pop_15to64,
              aapi_jail_pop, aapi_pop_15to64, other_race_jail_pop, total_jail_pop, total_pop_15to64) %>%
@@ -5103,7 +5107,7 @@ server <- function(input, output, session) {
       filter(type == 'Total Population')%>%
       hchart(
         "pie", hcaes(x = race.ethnicity, y = prop),
-        name = "Percentage of Total Population 2015"
+        name = "Percentage of Total Population"
       )
     pie_plots2
   })
