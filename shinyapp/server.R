@@ -4990,7 +4990,7 @@ server <- function(input, output, session) {
         ungroup()%>%
         arrange(desc(year),desc(jail.rate.per.100k))%>%
         mutate(label = ifelse(year==2018, race.ethnicity, ''))%>%
-        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity)) + 
+        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity), size = 1.5) + 
         # geom_label_repel(aes(year, jail.rate.per.100k, label = label),
         #               nudge_x = 1, nudge_y = 5,
         #               na.rm = TRUE) +
@@ -5022,7 +5022,7 @@ server <- function(input, output, session) {
         ungroup()%>%
         arrange(desc(year),desc(jail.rate.per.100k))%>%
         mutate(label = ifelse(year==2018, race.ethnicity, ''))%>%
-        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity)) + 
+        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity), size = 1.5) + 
         # geom_label_repel(aes(year, jail.rate.per.100k, label = label),
         #               nudge_x = 1, nudge_y = 5,
         #               na.rm = TRUE) +
