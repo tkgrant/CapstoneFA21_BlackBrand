@@ -4973,7 +4973,6 @@ server <- function(input, output, session) {
                    outlier.color = "black",
                    outlier.size = 3) +
       geom_jitter(alpha = 0.5, width = .2) +
-      labs(title = "Traffic Stops Data") +
       theme(plot.title = element_text(color = "black", size = 24, face = "bold")) +
       theme(legend.position = "none") +
       coord_flip()
