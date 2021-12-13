@@ -33,6 +33,10 @@ library(mapdata)
 library(plotrix)
 library(scatterpie)
 library(leafpop)
+library(ggpubr)
+library(viridis)
+library(highcharter)
+library(rCharts)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -393,150 +397,114 @@ ui <- navbarPage(
                           ))
                ))
       )
-    )
-    
-    
-    
-    
-  ),
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  #Data and Methodology ----------------------------------------------------
-  
-  
-  tabPanel(
-    "Data and Methodology",
-    #value = "data",
-    fluidRow(
-      style = "margin: 6px;",
-      h1(strong("Data and Methodology"), align = "center"),
-      p("", style = "padding-top:10px;"),
-      column(
-        4,
-        img(src = 'acs.png', style = "display: inline; float: left;", width = "200px"),
-        p(
-          "The ",
-          strong("American Community Survey (ACS)"),
-          " is an ongoing annual survey conducted by the U.S. Census Bureau.
+    ),
+    tabPanel(
+      "Data and Methodology",
+      fluidRow(
+        style = "margin: 6px;",
+        h1(strong("Data and Methodology"), align = "center"),
+        p("", style = "padding-top:10px;"),
+        column(
+          4,
+          img(src = 'acs.png', style = "display: inline; float: left;", width = "200px"),
+          p(
+            "The ",
+            strong("American Community Survey (ACS)"),
+            " is an ongoing annual survey conducted by the U.S. Census Bureau.
                                             The ACS samples households to compile a 1-year and 5-year datasets providing information on households sociodemographic
                                             and socioeconomic characteristics. We used almost a decade (2010-2019) 5- year estimates to obtain county and city level
                                             characteristics to explore the population of Hampton Roads."
-        ),
-        br(),
-        img(src = 'doe.jpg', style = "display: inline; float: left;", width = "150px"),
-        p(
-          "The ",
-          strong("Virginia Department of Education (VDOE)"),
-          "collects a variety of information from all school divisions in Virginia including the total number of educators and graduation rates.
+          ),
+          br(),
+          img(src = 'doe.jpg', style = "display: inline; float: left;", width = "150px"),
+          p(
+            "The ",
+            strong("Virginia Department of Education (VDOE)"),
+            "collects a variety of information from all school divisions in Virginia including the total number of educators and graduation rates.
                                             This allowed us to report demographic information for educators across the Hampton Roads region along with on-time graduation rate "
-        ),
-        br(),
-        img(src = 'kidscount.png', style = "display: inline; float: left;", width = "150px"),
-        p(
-          strong("Kids Count"),
-          "is a project of the",
-          strong("Annie E. Casey Foundation"),
-          "produces an annual report that assesses child well-being in the United States.
+          ),
+          br(),
+          img(src = 'kidscount.png', style = "display: inline; float: left;", width = "150px"),
+          p(
+            strong("Kids Count"),
+            "is a project of the",
+            strong("Annie E. Casey Foundation"),
+            "produces an annual report that assesses child well-being in the United States.
                                             We use this data source to present information on short-term suspension by race for the counties and cities in the Hampton Roads region. "
-        )
-      ) ,
-      
-      
-      column(
-        4,
-        h5(strong("Methodology")),
-        p(
-          "We explore two main pillars to examine the economic and social well-being of the Black community in Hampton Roads."
-        ),
-        p(
-          strong("Education:"),
-          "Educational attainment is a major contributor to improving an individual’s economic well-being and standard of living. As such, we examine the disparities in educational attainment to determine the economic progress of the Black community.
+          )
+        ) ,
+        
+        
+        column(
+          4,
+          h5(strong("Methodology")),
+          p(
+            "We explore two main pillars to examine the economic and social well-being of the Black community in Hampton Roads."
+          ),
+          p(
+            strong("Education:"),
+            "Educational attainment is a major contributor to improving an individual’s economic well-being and standard of living. As such, we examine the disparities in educational attainment to determine the economic progress of the Black community.
                                           Specifically, we collected data on on-time high school graduation rates and bachelor’s degree attainment. We also include the racial/ethnic representation of educators. Research indicates some distinct, albeit small, advantages when black students are paired with a Black teacher [1]. Suspension rate was also included in our analysis as some students are more likely to be disciplined than others even for the same transgression (KIDS Count).
                                           Moreover, a higher suspension rate will limit educational attainment, given the negative effect on achievement [2].
                                             "
+          ),
+          img(
+            src = 'education.png',
+            align = "center",
+            height = "300px",
+            width = "400px"
+          ),
+          p(
+            tags$small(
+              "[1] Anna J. Egalitea, A.J. , Kisida B., & Winters, M.A. (2015), Economics of Education Review, 45, 44-52."
+            )
+          ),
+          p(
+            tags$small(
+              "[2] Noltemeyer, A. L., Ward, R. M., & Mcloughlin, C. (2015). Relationship between school suspension and student outcomes: A meta-analysis. School Psychology Review, 44(2), 224-240."
+            )
+          ),
         ),
-        img(
-          src = 'education.png',
-          align = "center",
-          height = "300px",
-          width = "400px"
-        ),
-        p(
-          tags$small(
-            "[1] Anna J. Egalitea, A.J. , Kisida B., & Winters, M.A. (2015), Economics of Education Review, 45, 44-52."
-          )
-        ),
-        p(
-          tags$small(
-            "[2] Noltemeyer, A. L., Ward, R. M., & Mcloughlin, C. (2015). Relationship between school suspension and student outcomes: A meta-analysis. School Psychology Review, 44(2), 224-240."
-          )
-        ),
-      ),
-      
-      
-      column(
-        4,
-        p(),
-        p(),
-        p(),
-        p(
-          strong("Economics:"),
-          "A major driver of economic growth and mobility is growth in labor, income, health, and wealth accumulation (homeownership). Thus, we examine median income, poverty rates, industry employment and unemployment rates, health insurance status, and homeownership rate for the Black and general population across the counties and cities in Hampton Roads [1]."
-        ),
-        p(
-          "To further assess economic progress, we included several characteristics to measure Black household’s well-being.  We included welfare measures (Food Stamps or SNAP recipients); family stability (female-headed household, marital rates, grandparents’ guardianship, and migration); transportation access (private and public transportation); and technology access (computer and internet access)."
-        ),
-        p(),
-        img(
-          src = 'economic.png',
-          align = "center",
-          height = "300px",
-          width = "400px"
-        ),
-        p(),
-        p(),
-        p(
-          "Lastly, we rank counties/cities based on several of our indicators. The idea is to determine whether the Black community was consistently underperforming in some localities in the Hampton Road region."
-        ),
-        p(),
-        p(
-          tags$small(
-            "[1] Butler, S. M., Beach, W. W., & Winfree, P. L. (2008). Pathways to economic mobility: Key indicators. Economic mobility project."
-          )
-        ),
+        
+        
+        column(
+          4,
+          p(),
+          p(),
+          p(),
+          p(
+            strong("Economics:"),
+            "A major driver of economic growth and mobility is growth in labor, income, health, and wealth accumulation (homeownership). Thus, we examine median income, poverty rates, industry employment and unemployment rates, health insurance status, and homeownership rate for the Black and general population across the counties and cities in Hampton Roads [1]."
+          ),
+          p(
+            "To further assess economic progress, we included several characteristics to measure Black household’s well-being.  We included welfare measures (Food Stamps or SNAP recipients); family stability (female-headed household, marital rates, grandparents’ guardianship, and migration); transportation access (private and public transportation); and technology access (computer and internet access)."
+          ),
+          p(),
+          img(
+            src = 'economic.png',
+            align = "center",
+            height = "300px",
+            width = "400px"
+          ),
+          p(),
+          p(),
+          p(
+            "Lastly, we rank counties/cities based on several of our indicators. The idea is to determine whether the Black community was consistently underperforming in some localities in the Hampton Road region."
+          ),
+          p(),
+          p(
+            tags$small(
+              "[1] Butler, S. M., Beach, W. W., & Winfree, P. L. (2008). Pathways to economic mobility: Key indicators. Economic mobility project."
+            )
+          ),
+          
+        )
         
       )
       
     )
-    
   ),
+  
   
   
   # Education Indicators ----------------------------------------------------
@@ -1245,38 +1213,292 @@ ui <- navbarPage(
              ))
     
   ),
-		       
-  #People and Values
-                 #Hampton Roads Overview & Demographics--------------------------------------------------
-                 navbarMenu(title="People/Values",
-                            tabPanel("Family Dynamics",
-                                     fluidRow(
-                                       p("", style = "padding-top:20px;"),
-                                       column(4, 
-                                              h4(strong("Family Dynamics")),
-                                              p("", style = "padding-top:10px;"),
-                                              p("We retrived several indicators using the 2019 5-year ACS estimates to examine the family dynamics of Black households in Hampton Roads. These characteristics
+	
+  # Policy and Justice
+  navbarMenu(
+    title = "Policy/Justice",
+    tabPanel("Traffic Stops",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("Traffic Stops")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "In the period of July 1, 2020, to September 30, 2021, a traffic stop was pulled describing the driver’s racial background, age, gender, the severity of violation/action, and time of the incident. From these regions, excluding missing/incomplete data, there were over 16,000 traffic stops across the region, which averages roughly 35 stops daily. In this time span, 8642 African Americans have been recorded in the data, and 7656 Caucasians were the other majority with 219 who identified as Asian/Pacific Islander and 20 who identified as American Indian. The next visualizations will be further in-depth with county/city data on traffic stops identified by their age and racial background. Poquoson data is not on these graphs as their data was incomplete and not sufficient to be used in the matter as the other jurisdictions."),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                 "As in the graphs below, that reveal the number of citations and arrests made, the data vary between jurisdictions and it provides no clear answer on how the traffic stops provide insight on how the black community in the Hampton Roads region is treated. Future projects include additional information on traffic stops such as broadening the field of reasons for stops, researching other databases for matches or inconsistencies, and mapping high-interest locations for officers to be in position for stops."
+                 )),
+               column(8,
+                      fluidPage(
+                        h1(strong("Traffic Stops"), align = "center"),
+                        tabsetPanel(
+                          #Sector Employment
+                          tabPanel(
+                            "Race Counts",
+                            p("", style = "padding-top:10px;"),
+                            h4(strong("Race Counts"), align = "center"),
+                            fluidRow(
+                              p(""),
+                              withSpinner(plotOutput('trafficRace')))),
+                          tabPanel(
+                            "Race and Jurisdiction",
+                            p("", style = "padding-top:10px;"),
+                            h4(strong("Race and Jurisdiction"), align = "center"),
+                            fluidRow(
+                              p(""),
+                              withSpinner(plotOutput('jurisdiction')))),
+                          tabPanel(
+                            "Toggle Jurisdictions",
+                            p("", style = "padding-top:10px;"),
+                            h4(strong("Race Counts"), align = "center"),
+                            fluidRow(
+                              p(""),
+                              selectInput(
+                                "select_stop",
+                                "Select Hampton Roads County:",
+                                width = "100%",
+                                choices = c("CHESAPEAKE", "FRANKLIN CITY", "HAMPTON",
+                                            "NEWPORT NEWS", "NORFOLK", "POQUOSON",
+                                            "PORTSMOUTH", "SUFFOLK", "VIRGINIA BEACH",
+                                            "WILLIAMSBURG", "GLOUCESTER CO", "ISLE OF WIGHT CO",
+                                            "JAMES CITY CO", "MATHEWS CO", "SOUTHAMPTON CO",
+                                            "YORK CO")
+                              ),
+                              withSpinner(plotOutput('jurisdiction2'))
+                          )
+                      ))
+             )))),
+    tabPanel("City Council Demographics",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("City Council Demographics")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "What is played on the radio and where radio stations are located are telling of the community and what motivates the community. However, it is important to take into consideration that just because certain genres are usually dominated by a specific group/race, that doesn’t mean that only that race listens to that type of music. Due to those reasons, we are focusing on where the radio stations are located. The cities/counties where the most radio stations are located usually indicates the most racially diverse neighborhoods."
+                 )
+               ),
+               column(8,
+                      fluidPage(
+                      h1(strong("City Council Demographics"), align = "center"),
+                      withSpinner(plotOutput('cityd')), 
+                      withSpinner(plotOutput('cityd2'))))
+             )),
+    tabPanel("Incarceration Trends",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("Incarceration Trends")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "What is played on the radio and where radio stations are located are telling of the community and what motivates the community. However, it is important to take into consideration that just because certain genres are usually dominated by a specific group/race, that doesn’t mean that only that race listens to that type of music. Due to those reasons, we are focusing on where the radio stations are located. The cities/counties where the most radio stations are located usually indicates the most racially diverse neighborhoods."
+                 )
+               ),
+               column(8,
+                      fluidPage(
+                        h1(strong("Incarceration Trends"), align = "center"),
+                        tabsetPanel(
+                          #Sector Employment
+                          tabPanel(
+                            "Jail Rates",
+                            p("", style = "padding-top:10px;"),
+                            h4(strong("Jail Rates"), align = "center"),
+                            fluidRow(
+                              p(""),
+                              selectInput(
+                                "select_jailChoice",
+                                "Select:",
+                                width = "100%",
+                                choices = c(
+                                  "Virginia",
+                                  "Hampton Roads"
+                                )
+                              ),
+                              withSpinner(plotOutput("jail")),
+                              p(tags$small("Source: "))
+                              
+                            )
+                          ),
+                          tabPanel(
+                            "Jail/Pop Demographics",
+                            p("", style = "padding-top:10px;"),
+                            h4(strong("Jail and Total Population Hampton Roads Demographics"), align = "center"),
+                            fluidRow(
+                              p(""),
+                              selectInput(
+                                "select_pieYear",
+                                "Select Year:",
+                                width = "100%",
+                                choices = c("2014", "2015", "2016", "2017", "2018")
+                              ),
+                              # showOutput("pie_plots1", "Highcharts"),
+                              # showOutput("pie_plots2", "Highcharts"),
+                              column(width=6, h3('Jail Population'),
+                                     withSpinner(highchartOutput("pie_plots1"))),
+                              column(width=6, h3('Total Population'),
+                                     withSpinner(highchartOutput("pie_plots2"))),
+                              p(tags$small("Source: ACS 5 Year Estimate Table DP03"))
+                            )
+                          ),
+                          tabPanel(
+                            "Prison Rates",
+                            p("", style = "padding-top:10px;"),
+                            h4(strong("Prison Rates"), align = "center"),
+                            fluidRow(
+                              p(""),
+                              selectInput(
+                                "select_prisonYear",
+                                "Select Year:",
+                                width = "100%",
+                                choices = c("2013", "2012","2011", "2010", "2009")
+                              ),
+                              withSpinner(leafletOutput("prison")),
+                              p(tags$small("Source: ACS 5 Year Estimate Table DP03"))
+                              
+                            )
+                          )
+                        )
+                        ))
+             ))
+  ),
+    
+  # Media and Entertainment
+  navbarMenu(
+    title = "Media/Entertainment",
+    tabPanel("News Anchors",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("News Anchors")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "Throughout the Hampton Roads region, there are three major local news channels: WAVY, WTKR, and Channel 13 News. Here we are looking at the race of the news anchors by gender, role, and channel. From the three news channels, there are a total of 90 news anchors. By looking at the pie chart, we can see that the majority of the news anchors (70%) were White and a quarter of the anchors (24.4%) were Black. The other 5% were either of Latin or Asian descent."
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "By looking at the graphic that displays Gender vs. Ethnicity, we can see that there were more Black female anchors than Black male anchors. This opposes the pattern that is displayed by the White anchors. This could be due to more Black females being in that profession in the area."
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "By looking at the graphic displaying Ethnicity vs. Role, we can see that the two most concentrated positions are news anchors, reporters, and meteorologists. Black news anchors were not that many less than the White news anchors, however there seems to be around 3 times more White news reporters and meteorologists than Black news reporters and meteorologists. By looking at the greater race distribution of Hampton Roads, the roles at the news channels compared to race are not a good representation of the community."
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "The last graphic shows Ethnicity Distribution by News Channel. Again, the most hired anchors are White across all channels, however WTKR has the least amount of Black news anchors. Another thing to notice is that WTKR has no anchors from any specific race group besides White and Black. The most racially inclusive channel seems to be Channel 13 based on the data that was collected."
+                 )
+               ),
+               column(8,
+                      fluidPage(
+                        h1(strong("News Anchors"), align = "center"),
+                        withSpinner(plotOutput("anch_plots")),
+                        p(tags$small(
+                            "Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"
+                          ))
+                      ))
+             )),
+    tabPanel("Radio Stations",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("Radio Stations")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "What is played on the radio and where radio stations are located are telling of the community and what motivates the community. However, it is important to take into consideration that just because certain genres are usually dominated by a specific group/race, that doesn’t mean that only that race listens to that type of music. Due to those reasons, we are focusing on where the radio stations are located. The cities/counties where the most radio stations are located usually indicates the most racially diverse neighborhoods."
+                 )
+               ),
+               column(8, # radio
+                      fluidPage(
+                        h1(strong("Radio Stations"), align = "center"),
+                        withSpinner(leafletOutput("radio")),
+                        p(tags$small(
+                            "Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"
+                          )))
+             ))
+  )),
+  
+  
+  #People and Values--------------------------------------------------
+  navbarMenu(
+    title = "People/Values",
+    tabPanel("Family Dynamics",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("Family Dynamics")),
+                 p("", style = "padding-top:10px;"),
+                 p(
+                   "We retrived several indicators using the 2019 5-year ACS estimates to examine the family dynamics of Black households in Hampton Roads. These characteristics
                                                are presented using interactive maps. Clicking on the tabs and selecting a variable populates the map. Hovering over the map displays the percentage of Black residents living
-                                                in a specific city/county with the selected characteristics. "),
-                                              p("", style = "padding-top:20px;"),
-                                              tags$ul(
-                                                tags$li(("The interactive map shows:")),
-                                                p("", style = "padding-top:20px;"),
-                                                withSpinner(textOutput("description_famtext")))
-                                       ),
-                                       column(8,
-                                              fluidPage(
-                                                h1(strong("Family Dynamics"), align = "center"),
-                                                selectInput("select_family", "Select Indicator:", width = "100%", choices = c("Percent of Black Children under 18 in Female Head of Household", "Percent of Married Black Population 15 years and over", "Percent of Black Grandparents who are Guardians")),
-                                                withSpinner(leafletOutput("family_maps")),
-                                                p(tags$small("Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802")),
-                                                
-                                              )
-                                       )
-                                     ))),
+                                                in a specific city/county with the selected characteristics. "
+                 ),
+                 p("", style = "padding-top:20px;"),
+                 tags$ul(
+                   tags$li(("The interactive map shows:")),
+                   p("", style = "padding-top:20px;"),
+                   withSpinner(textOutput("description_famtext"))
+                 )
+               ),
+               column(8,
+                      fluidPage(
+                        h1(strong("Family Dynamics"), align = "center"),
+                        selectInput(
+                          "select_family",
+                          "Select Indicator:",
+                          width = "100%",
+                          choices = c(
+                            "Percent of Black Children under 18 in Female Head of Household",
+                            "Percent of Married Black Population 15 years and over",
+                            "Percent of Black Grandparents who are Guardians"
+                          )
+                        ),
+                        withSpinner(leafletOutput("family_maps")),
+                        p(
+                          tags$small(
+                            "Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"
+                          )
+                        ),
+                        
+                      ))
+             )),
+    tabPanel("Religion",
+             fluidRow(
+               p("", style = "padding-top:20px;"),
+               column(
+                 4,
+                 h4(strong("Religion")),
+                 p("", style = "padding-top:10px;"),
+                 p("The people and values pillar is designed with Maslow's hierarchy of needs in mind. DESCRIPTION OF MASLOWS"),
+                 p("", style = "padding-top:10px;"),
+                 p( "Are the spiritual needs of citizens in Hampton Roads being met by the churches? We can begin to unpack this question by looking at some religious data from ARDA. Using this source we can picture the religious needs of each county and city."),
+                 p("", style = "padding-top:10px;"),
+                 p("The plot on the right indicates how prominent a religion is in the cities and counties of Hampton Roads. An NA value, gray on the map, indicates that the database has no information about congregations for that religion in that area. This either happens when there are no congregations in that area for that religion, or when there are congregations in the region but they were not included in the survey (did not respond, weren’t found).")
+               ),
+               column(8,
+                      fluidPage(
+                        h1(strong("Religion"), align = "center"),
+                        selectInput(
+                          "select_rel",
+                          "Select Religion:",
+                          width = "100%",
+                          choices = c('Christianity', 'Judaism', 'Budhism','Hindu', 'Islam')
+                          ),
+                        withSpinner(leafletOutput("religion")), 
+                        p(
+                          tags$small(
+                            "Data Source: 2010 U.S. Religion Census: Religious Congregations & Membership Study"
+                          )
+                        )))
+             ))
+  ),
   
-  
-  tabPanel("Future Steps",
+  tabPanel("Future Work",
            fluidRow(
              p("", style = "padding-top:20px;"),
              column(
