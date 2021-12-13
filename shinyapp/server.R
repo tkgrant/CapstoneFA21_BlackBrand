@@ -4934,15 +4934,19 @@ server <- function(input, output, session) {
     
     # Race Count ------------
     trafficRace <- ggplot(data,
-           aes(x = RACE)) +
+           aes(x = RACE)) +  theme_fivethirtyeight() +
       geom_bar(fill = "cornflowerblue") +
       geom_text(aes(label = ..count..), stat = "count", vjust = -0.5,
                 colour = "black") + 
       labs(x = "Race",
            y = "Count",
            title = "Demographics of Traffic Stops") + 
-      theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
-      theme(plot.title = element_text(color = "black", size = 24))
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 15),
+            axis.text.y = element_text(hjust = 1, size = 15)) + 
+      theme(plot.title = element_text(color = "black", size = 24)) + ylim(0, 10500) +
+      theme( # remove the vertical grid lines
+        panel.grid.major.x = element_blank()
+      )
     
     trafficRace
   })
@@ -4954,9 +4958,11 @@ server <- function(input, output, session) {
     
     # Analyze
     jurisdiction <- ggplot(data, aes(x = JURISDICTION, fill = RACE)) +
-      geom_bar(position = "dodge") + 
-      theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
-      theme(plot.title = element_text(color = "black", size = 24, face = "bold"))
+      geom_bar(position = "dodge") + theme_fivethirtyeight() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 15),
+           axis.text.y = element_text(hjust = 1, size = 15)) +
+      theme(plot.title = element_text(color = "black", size = 24, face = "bold"), 
+            legend.text=element_text(size=15)) + ylim(0, 2000)
     
     jurisdiction
   })
@@ -4967,14 +4973,17 @@ server <- function(input, output, session) {
     data <- read.csv("./data/hampton_trafficstop.csv")
     
     jurisdiction2 <- data %>% filter(JURISDICTION == var_stop()) %>% 
-      ggplot(aes(y=RACE,x = AGE, color = RACE)) +
+      ggplot(aes(y=RACE,x = AGE, color = RACE)) + theme_fivethirtyeight() +
       geom_boxplot(size = 1, 
                    outlier.shape =1,
                    outlier.color = "black",
                    outlier.size = 3) +
-      geom_jitter(alpha = 0.5, width = .2) +
+      geom_jitter(alpha = 0.25, width = .2) +
+      labs(title = "Traffic Stops Data") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+            axis.text.y = element_text(hjust = 1, size = 15)) +
       theme(plot.title = element_text(color = "black", size = 24, face = "bold")) +
-      theme(legend.position = "none") +
+      theme(legend.position = "none") + 
       coord_flip()
     jurisdiction2
   })
@@ -5047,7 +5056,7 @@ server <- function(input, output, session) {
         ungroup()%>%
         arrange(desc(year),desc(jail.rate.per.100k))%>%
         mutate(label = ifelse(year==2018, race.ethnicity, ''))%>%
-        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity), size = 1.5) + 
+        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity), size = 2.5) + 
         # geom_label_repel(aes(year, jail.rate.per.100k, label = label),
         #               nudge_x = 1, nudge_y = 5,
         #               na.rm = TRUE) +
@@ -5055,7 +5064,8 @@ server <- function(input, output, session) {
         ggtitle('Jail Rate per 100,000 ages 15-64 for VA state') +
         scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
         scale_y_continuous(breaks = scales::pretty_breaks(n = 3)) +
-        #theme(legend.position = "none") +  
+        theme(legend.text=element_text(size=20), legend.title=element_blank(), 
+              axis.text.x = element_text(size=15), axis.text.y = element_text(size=15))  +  
         xlim(1990, 2020) + ylim(0, 2000)   
     }
     else if (var_jailChoice() == "Hampton Roads") {
@@ -5079,7 +5089,7 @@ server <- function(input, output, session) {
         ungroup()%>%
         arrange(desc(year),desc(jail.rate.per.100k))%>%
         mutate(label = ifelse(year==2018, race.ethnicity, ''))%>%
-        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity), size = 1.5) + 
+        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity), size = 2.5) + 
         # geom_label_repel(aes(year, jail.rate.per.100k, label = label),
         #               nudge_x = 1, nudge_y = 5,
         #               na.rm = TRUE) +
@@ -5087,7 +5097,8 @@ server <- function(input, output, session) {
         ggtitle('Jail Rate per 100,000 ages 15-64 in Hampton Roads') +
         scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) +
         scale_y_continuous(breaks = scales::pretty_breaks(n = 3)) +
-        #theme(legend.position = "none") +  
+        theme(legend.text=element_text(size=20), legend.title=element_blank(), 
+              axis.text.x = element_text(size=15), axis.text.y = element_text(size=15)) +    
         xlim(1990, 2020) + ylim(0, 2000)   
       
     }

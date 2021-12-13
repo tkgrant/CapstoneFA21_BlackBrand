@@ -1278,7 +1278,7 @@ ui <- navbarPage(
                  h4(strong("City Council Demographics")),
                  p("", style = "padding-top:10px;"),
                  p(
-                   "What is played on the radio and where radio stations are located are telling of the community and what motivates the community. However, it is important to take into consideration that just because certain genres are usually dominated by a specific group/race, that doesn’t mean that only that race listens to that type of music. Due to those reasons, we are focusing on where the radio stations are located. The cities/counties where the most radio stations are located usually indicates the most racially diverse neighborhoods."
+                   "It is evident that there are a majority of male-dominated city councils and no female majority dominated city councils.  In addition, these plots depict that each city council has at least one female and Newport News and Norfolk genders are equally represented.  Furthermore,  it is evident that half of the city councils have equal representation or majority-black, members.  There are areas such as Chesapeake, Virginia Beach, and Williamsburg that are dominantly white members on the city council where only Williamsburg has only white members."
                  )
                ),
                column(8,
@@ -1295,9 +1295,12 @@ ui <- navbarPage(
                  h4(strong("Incarceration Trends")),
                  p("", style = "padding-top:10px;"),
                  p(
-                   "What is played on the radio and where radio stations are located are telling of the community and what motivates the community. However, it is important to take into consideration that just because certain genres are usually dominated by a specific group/race, that doesn’t mean that only that race listens to that type of music. Due to those reasons, we are focusing on where the radio stations are located. The cities/counties where the most radio stations are located usually indicates the most racially diverse neighborhoods."
-                 )
-               ),
+                   "The first graphic depicts the Jail rate per 100,000 people ages 15-64 for the cities and counties within Hampton Roads. These cities and counties are Gloucester County, Isle of Wight County, James City County, Mathews County, Southampton County, York County, Chesapeake City, Franklin city, Hampton city, Newport News city, Norfolk city, Poquoson city, Portsmouth city, Suffolk city, Virginia Beach city, Williamsburg city. The trend observed is that from 1990 to 2006 the jail rate for black people steadily increased from 1,000 to almost 1,700. After 2007 the jail rate steadily decreased back towards 1,000 which translates to for every 100,000 black people in Hampton Roads 1,000 of them are put in jail.  "), 
+                 p("The next graphic depicts proportions for demographics for jail population and total population for Hampton Roads in 2018. Note the dashboard allows users to select years 2014 through 2018 however the resulting proportions are very similar. The graphic depicts the underlying systemic issue where black people are 33% of the total population and also makeup 58% of the jail population. Jails are used by local governments for short-term holding and less serious offenses and thus based on the data gathered black people in Hampton Roads are more likely to be dealing with smaller offenses. Some examples of common small offenses are drug charges, offenses against the justice system, traffic offenses, assault, fraud, and theft."),
+                 p("The last graphic depicts the Prison rate per 100,000 people ages 15-64 for the cities and counties within Hampton Roads for the year 2013 (most recent data found). This graphic depicts that Williamsburg City, Southampton, and Portsmouth have the highest prison admission rates per 100,000 people in their respective geographic boundaries. Generally, prisons are utilized in increased serious crime offenses than jail which leads to the similarities and differences in prison admission rates over Hampton Roads to be an area for further study.  "),
+                 p("From the Policy/Justice pillar, we can conclude that black people in Hampton Roads remain the most incarcerated racial group.  While we can observe a drop in jail rates for black people closer to the rate in 1990, the data available lacks the certainty to conclude a quantifiable extent to which the decrease in jail rate is meaningful for the Hampton Roads community.  We propose that a more important metric is the proportion of which black people make up the total population and the proportion of black people that make up prison and jail populations.  From our analysis, the ratio of both proportions has not significantly changed in the past 5 years.  ")
+                 
+        ),
                column(8,
                       fluidPage(
                         h1(strong("Incarceration Trends"), align = "center"),
@@ -1319,7 +1322,7 @@ ui <- navbarPage(
                                 )
                               ),
                               withSpinner(plotOutput("jail")),
-                              p(tags$small("Source: "))
+                              p(tags$small("Source: Vera Institute of Justice"))
                               
                             )
                           ),
@@ -1341,7 +1344,7 @@ ui <- navbarPage(
                                      withSpinner(highchartOutput("pie_plots1"))),
                               column(width=6, h3('Total Population'),
                                      withSpinner(highchartOutput("pie_plots2"))),
-                              p(tags$small("Source: ACS 5 Year Estimate Table DP03"))
+                              p(tags$small("Source: Vera Institute of Justice"))
                             )
                           ),
                           tabPanel(
@@ -1357,7 +1360,7 @@ ui <- navbarPage(
                                 choices = c("2013", "2012","2011", "2010", "2009")
                               ),
                               withSpinner(leafletOutput("prison")),
-                              p(tags$small("Source: ACS 5 Year Estimate Table DP03"))
+                              p(tags$small("Source: Vera Institute of Justice"))
                               
                             )
                           )
@@ -1397,7 +1400,7 @@ ui <- navbarPage(
                         h1(strong("News Anchors"), align = "center"),
                         withSpinner(plotOutput("anch_plots")),
                         p(tags$small(
-                            "Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"
+                            "Data Source: Manually Collected"
                           ))
                       ))
              )),
@@ -1417,7 +1420,7 @@ ui <- navbarPage(
                         h1(strong("Radio Stations"), align = "center"),
                         withSpinner(leafletOutput("radio")),
                         p(tags$small(
-                            "Data Source: ACS 5 Year Estimates Tables: S0901, S2201, S0701, S1002, S1201, S0802, S2802"
+                            "Data Source: Collected from new station" # 
                           )))
              ))
   )),
@@ -1713,8 +1716,9 @@ ui <- navbarPage(
                    a(href = 'https://cs.vt.edu/', ' Computer Science'),
                    '.',
                    "By combining elements of these disciplines in innovative, integrated courses that emphasize techniques at the forefront of applied computation, we teach a rich suite of quantitative skills for tackling today's massive data-based problems."
-                 )
-                 #p("", style = "padding-top:10px;")
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 h4("This dashboard was originally created by the VT DSPG team in the summer of 2021.  The CMDA Capstone team continued their work and added to the pre-existing material.  The CMDA Capstone team's contribution includes the work done for the policy/justice, media/entertainment, and people/values pillars (exception of family dynamics under people/values).  All of the remaining accrediation for work completed remains with the VT DSPG team and program.")
                )),
       fluidRow(
         column(2),
