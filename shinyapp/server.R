@@ -4922,6 +4922,64 @@ server <- function(input, output, session) {
     anch_plots
   }, height=1000)
     
+  # Traffic stops
+  # race count
+  output$trafficRace <- renderPlot({
+    data <- read.csv("./data/hampton_trafficstop.csv")
+    
+    # Analyze
+    print(is.data.frame(data))
+    print(ncol(data))
+    print(nrow(data))
+    
+    # Race Count ------------
+    trafficRace <- ggplot(data,
+           aes(x = RACE)) +
+      geom_bar(fill = "cornflowerblue") +
+      geom_text(aes(label = ..count..), stat = "count", vjust = -0.5,
+                colour = "black") + 
+      labs(x = "Race",
+           y = "Count",
+           title = "Demographics of Traffic Stops") + 
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+      theme(plot.title = element_text(color = "black", size = 24))
+    
+    trafficRace
+  })
+  
+  # Race and Jurisdiction
+  
+  output$jurisdiction <- renderPlot({
+    data <- read.csv("./data/hampton_trafficstop.csv")
+    
+    # Analyze
+    jurisdiction <- ggplot(data, aes(x = JURISDICTION, fill = RACE)) +
+      geom_bar(position = "dodge") + 
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+      theme(plot.title = element_text(color = "black", size = 24, face = "bold"))
+    
+    jurisdiction
+  })
+  var_stop <- reactive(
+    input$select_stop
+  )
+  output$jurisdiction2 <- renderPlot({
+    data <- read.csv("./data/hampton_trafficstop.csv")
+    
+    jurisdiction2 <- data %>% filter(JURISDICTION == var_stop()) %>% 
+      ggplot(aes(y=RACE,x = AGE, color = RACE)) +
+      geom_boxplot(size = 1, 
+                   outlier.shape =1,
+                   outlier.color = "black",
+                   outlier.size = 3) +
+      geom_jitter(alpha = 0.5, width = .2) +
+      labs(title = "Traffic Stops Data") +
+      theme(plot.title = element_text(color = "black", size = 24, face = "bold")) +
+      theme(legend.position = "none") +
+      coord_flip()
+    jurisdiction2
+  })
+  
   # City council demographics Race
   output$cityd <- renderPlot({
     police_df <- read.csv('./data/hampton_roads_police_chief.csv')
@@ -4990,7 +5048,7 @@ server <- function(input, output, session) {
         ungroup()%>%
         arrange(desc(year),desc(jail.rate.per.100k))%>%
         mutate(label = ifelse(year==2018, race.ethnicity, ''))%>%
-        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity)) + 
+        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity), size = 1.5) + 
         # geom_label_repel(aes(year, jail.rate.per.100k, label = label),
         #               nudge_x = 1, nudge_y = 5,
         #               na.rm = TRUE) +
@@ -5022,7 +5080,7 @@ server <- function(input, output, session) {
         ungroup()%>%
         arrange(desc(year),desc(jail.rate.per.100k))%>%
         mutate(label = ifelse(year==2018, race.ethnicity, ''))%>%
-        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity)) + 
+        ggplot() + geom_line(aes(year, jail.rate.per.100k, col = race.ethnicity), size = 1.5) + 
         # geom_label_repel(aes(year, jail.rate.per.100k, label = label),
         #               nudge_x = 1, nudge_y = 5,
         #               na.rm = TRUE) +

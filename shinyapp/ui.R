@@ -1225,27 +1225,51 @@ ui <- navbarPage(
                  h4(strong("Traffic Stops")),
                  p("", style = "padding-top:10px;"),
                  p(
-                   "Throughout the Hampton Roads region, there are three major local news channels: WAVY, WTKR, and Channel 13 News. Here we are looking at the race of the news anchors by gender, role, and channel. From the three news channels, there are a total of 90 news anchors. By looking at the pie chart, we can see that the majority of the news anchors (70%) were White and a quarter of the anchors (24.4%) were Black. The other 5% were either of Latin or Asian descent."
-                 ),
+                   "In the period of July 1, 2020, to September 30, 2021, a traffic stop was pulled describing the driver’s racial background, age, gender, the severity of violation/action, and time of the incident. From these regions, excluding missing/incomplete data, there were over 16,000 traffic stops across the region, which averages roughly 35 stops daily. In this time span, 8642 African Americans have been recorded in the data, and 7656 Caucasians were the other majority with 219 who identified as Asian/Pacific Islander and 20 who identified as American Indian. The next visualizations will be further in-depth with county/city data on traffic stops identified by their age and racial background. Poquoson data is not on these graphs as their data was incomplete and not sufficient to be used in the matter as the other jurisdictions."),
                  p("", style = "padding-top:10px;"),
                  p(
-                   "By looking at the graphic that displays Gender vs. Ethnicity, we can see that there were more Black female anchors than Black male anchors. This opposes the pattern that is displayed by the White anchors. This could be due to more Black females being in that profession in the area."
-                 ),
-                 p("", style = "padding-top:10px;"),
-                 p(
-                   "By looking at the graphic displaying Ethnicity vs. Role, we can see that the two most concentrated positions are news anchors, reporters, and meteorologists. Black news anchors were not that many less than the White news anchors, however there seems to be around 3 times more White news reporters and meteorologists than Black news reporters and meteorologists. By looking at the greater race distribution of Hampton Roads, the roles at the news channels compared to race are not a good representation of the community."
-                 ),
-                 p("", style = "padding-top:10px;"),
-                 p(
-                   "The last graphic shows Ethnicity Distribution by News Channel. Again, the most hired anchors are White across all channels, however WTKR has the least amount of Black news anchors. Another thing to notice is that WTKR has no anchors from any specific race group besides White and Black. The most racially inclusive channel seems to be Channel 13 based on the data that was collected."
-                 )
-               ),
+                 "As in the graphs below, that reveal the number of citations and arrests made, the data vary between jurisdictions and it provides no clear answer on how the traffic stops provide insight on how the black community in the Hampton Roads region is treated. Future projects include additional information on traffic stops such as broadening the field of reasons for stops, researching other databases for matches or inconsistencies, and mapping high-interest locations for officers to be in position for stops."
+                 )),
                column(8,
                       fluidPage(
-                        h1(strong("Traffic Stops"), align = "center")
-                        
+                        h1(strong("Traffic Stops"), align = "center"),
+                        tabsetPanel(
+                          #Sector Employment
+                          tabPanel(
+                            "Race Counts",
+                            p("", style = "padding-top:10px;"),
+                            h4(strong("Race Counts"), align = "center"),
+                            fluidRow(
+                              p(""),
+                              withSpinner(plotOutput('trafficRace')))),
+                          tabPanel(
+                            "Race and Jurisdiction",
+                            p("", style = "padding-top:10px;"),
+                            h4(strong("Race and Jurisdiction"), align = "center"),
+                            fluidRow(
+                              p(""),
+                              withSpinner(plotOutput('jurisdiction')))),
+                          tabPanel(
+                            "Toggle Jurisdictions",
+                            p("", style = "padding-top:10px;"),
+                            h4(strong("Race Counts"), align = "center"),
+                            fluidRow(
+                              p(""),
+                              selectInput(
+                                "select_stop",
+                                "Select Hampton Roads County:",
+                                width = "100%",
+                                choices = c("CHESAPEAKE", "FRANKLIN CITY", "HAMPTON",
+                                            "NEWPORT NEWS", "NORFOLK", "POQUOSON",
+                                            "PORTSMOUTH", "SUFFOLK", "VIRGINIA BEACH",
+                                            "WILLIAMSBURG", "GLOUCESTER CO", "ISLE OF WIGHT CO",
+                                            "JAMES CITY CO", "MATHEWS CO", "SOUTHAMPTON CO",
+                                            "YORK CO")
+                              ),
+                              withSpinner(plotOutput('jurisdiction2'))
+                          )
                       ))
-             )),
+             )))),
     tabPanel("City Council Demographics",
              fluidRow(
                p("", style = "padding-top:20px;"),
