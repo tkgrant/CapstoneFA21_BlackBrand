@@ -4884,14 +4884,15 @@ server <- function(input, output, session) {
       group_by(Ethnicity) %>%
       summarise(count = n()) %>%
       ggplot(aes(x = "", y = count, fill = Ethnicity)) +
-      geom_bar(stat = "identity", width = 1) +
+      geom_bar(stat = "identity", width = 1) + 
       coord_polar("y", start = 0) +
       theme_void() +
       geom_text(aes(
         y = count,
         label = paste(round(count / sum(count) * 100, 1), "%"),
         x = 1.3
-      ), position = position_stack(vjust = 0.5))
+      ), position = position_stack(vjust = 0.5)) + theme(legend.text=element_text(size=15))
+                                                      
     
     #bar chart of the gender and ethnicity distributions
     plt2 <- anch %>%
@@ -4900,6 +4901,11 @@ server <- function(input, output, session) {
       ggplot(aes(Ethnicity, count, fill = Gender)) +
       geom_bar(stat = "identity", position = "dodge") + theme_fivethirtyeight() +
       theme(axis.title = element_text()) + ylab('Count') +
+      theme(axis.title.y = element_text(),
+            axis.title = element_blank(),
+            axis.text.x = element_text(size = 15),
+            axis.text.y = element_text( size = 15),
+            legend.text=element_text(size=20)) +
       xlab('Ethnicity')
     #bar chart of the Roles vs. Ethnicity
     plt3 <- anch %>%
@@ -4908,6 +4914,11 @@ server <- function(input, output, session) {
       ggplot(aes(Ethnicity, count, fill = Role)) +
       geom_bar(stat = "identity", position = "dodge") + theme_fivethirtyeight() +
       theme(axis.title = element_text()) + ylab('Count') +
+      theme(axis.title.y = element_text(),
+            axis.title = element_blank(),
+            axis.text.x = element_text(size = 15),
+            axis.text.y = element_text( size = 15),
+            legend.text=element_text(size=20)) +
       xlab('Ethnicity')
     
     plt4 <- anch %>%
@@ -4916,6 +4927,11 @@ server <- function(input, output, session) {
       ggplot(aes(Ethnicity, count, fill = Channel)) +
       geom_bar(stat = "identity", position = "dodge") + theme_fivethirtyeight() +
       theme(axis.title = element_text()) + ylab('Count') +
+      theme(axis.title.y = element_text(),
+            axis.title = element_blank(),
+            axis.text.x = element_text(size = 15),
+            axis.text.y = element_text( size = 15),
+            legend.text=element_text(size=20)) +
       xlab('Ethnicity')
     anch_plots <- ggarrange(plt1, plt2, plt3, plt4, ncol = 1, nrow = 4)
     # ggarrange(plt2, plt3, plt4,  common.legend = TRUE)
@@ -5004,7 +5020,9 @@ server <- function(input, output, session) {
       theme_fivethirtyeight() +
       theme(axis.title.y = element_text(),
             axis.title = element_text(),
-            axis.text.x = element_text(angle = 90)) +
+            axis.text.x = element_text(angle = 45, size = 13, hjust =1), 
+            axis.text.y = element_text(hjust = 1, size = 15),
+            legend.text=element_text(size=20), legend.title=element_blank()) +
       ggtitle('City Council Demographics by Race 2021') +ylab('count')
     cityd
   })
@@ -5023,11 +5041,13 @@ server <- function(input, output, session) {
       theme_fivethirtyeight() +
       theme(axis.title.y = element_text(),
             axis.title = element_text(),
-            axis.text.x = element_text(angle = 90)) +
+            axis.text.x = element_text(angle = 45, size = 13, hjust = 1),
+            axis.text.y = element_text( size = 15),
+            legend.text=element_text(size=20), legend.title=element_blank()) +
       ggtitle('City Council Demographics by Gender 2021') +ylab('count')
     cityd2
   })
-  
+
   
   # Jail plots
   var_jailChoice <- reactive({
