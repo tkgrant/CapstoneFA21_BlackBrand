@@ -37,6 +37,7 @@ library(ggpubr)
 library(viridis)
 library(highcharter)
 library(rCharts)
+library(terra)
 
 prettyblue <- "#232D4B"
 navBarBlue <- '#427EDC'
@@ -98,8 +99,8 @@ ui <- navbarPage(
             "Tracking indicators of the economic and social mobility of the Black community in Hampton Roads"
           ),
           br(""),
-          h4("Data Science for the Public Good Program"),
-          h4("Virginia Tech"),
+          h4("Virginia Tech: Data Science for the Public Good Program & CMDA Capstone Team"),
+          h4("See 'Meet the Team' tab for detailed team contributions"),
           br()
         )
       ),
