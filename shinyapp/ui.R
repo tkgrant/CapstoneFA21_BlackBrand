@@ -1719,8 +1719,7 @@ ui <- navbarPage(
                    "By combining elements of these disciplines in innovative, integrated courses that emphasize techniques at the forefront of applied computation, we teach a rich suite of quantitative skills for tackling today's massive data-based problems."
                  ),
                  p("", style = "padding-top:10px;"),
-                 h4("This dashboard was originally created by the VT DSPG team in the summer of 2021.  The CMDA Capstone team continued their work and added to the pre-existing material.  The CMDA Capstone team's contribution includes the work done for the policy/justice, media/entertainment, and people/values pillars (exception of family dynamics under people/values).  All of the remaining accrediation for work completed remains with the VT DSPG team and program.")
-               )),
+                 )),
       fluidRow(
         column(2),
         column(
@@ -1798,6 +1797,22 @@ ui <- navbarPage(
         )
         
       )
+    ),
+    tabPanel(
+      "Team Contributions",
+      value = "team",
+      fluidRow(column(3),
+               column(
+                 6,
+                 h4(
+                   strong(
+                     "Team Contributions"
+                   ) ,
+                   align = "center"
+                 ),
+                 p("", style = "padding-top:10px;"),
+                 p("This dashboard was originally created by the Virginia Tech (VT) DSPG team in the summer of 2021.  The CMDA Capstone team continued their work and added to the pre-existing material.  The CMDA Capstone team's contribution includes the work done for the policy/justice, media/entertainment, and people/values pillars (exception of family dynamics under people/values).  All of the remaining accrediation for work completed remains with the VT DSPG team and program.")
+               ))
     )
   ),
   inverse = T
